@@ -8,6 +8,8 @@ pub struct TernaryKeyKind;
 pub struct GaussianKeyKind;
 /// This type is a marker for keys using uniformly sampled elements as scalar.
 pub struct UniformKeyKind;
+/// This type is a marker for keys filled with zeros (used for testing)
+pub struct ZeroKeyKind;
 
 /// In concrete, secret keys can be based on different kinds of scalar values (put aside the
 /// data type eventually used to store it in memory). This trait is implemented by marker types,
@@ -18,6 +20,7 @@ impl KeyKind for BinaryKeyKind {}
 impl KeyKind for TernaryKeyKind {}
 impl KeyKind for GaussianKeyKind {}
 impl KeyKind for UniformKeyKind {}
+impl KeyKind for ZeroKeyKind {}
 
 mod seal {
     pub trait SealedKeyKind {}
@@ -25,4 +28,5 @@ mod seal {
     impl SealedKeyKind for super::TernaryKeyKind {}
     impl SealedKeyKind for super::GaussianKeyKind {}
     impl SealedKeyKind for super::UniformKeyKind {}
+    impl SealedKeyKind for super::ZeroKeyKind {}
 }
