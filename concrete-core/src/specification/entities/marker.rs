@@ -1,71 +1,97 @@
-/// This trait is a marker for types encoding an fhe entity in the type system.
+/// This trait is implemented by types encoding the kind of an fhe entity in the type system.
 ///
-/// Data kind implementors are unsized types which are used to encode the kind of fhe object
-/// we are dealing with, in the type system. They are not meant for any computation, but just for
-/// compile-time verification, dispatch, and genericity.
-pub trait EntityKind: sealed::EntityKindSeal {}
-macro_rules! fhe_entity_kind {
-        (@ $name: ident)=>{
+/// By _kind_ here, we mean the different objects we manipulate at an abstract level (like
+/// plaintext, cleartext, lwe ciphertext, ...).
+pub trait EntityKindMarker: seal::EntityKindMarkerSealed {}
+macro_rules! entity_kind_marker {
+        (@ $name: ident => $doc: literal)=>{
+            #[doc=$doc]
+            #[derive(Debug, Clone, Copy)]
             pub struct $name{}
-            impl sealed::EntityKindSeal for $name{}
-            impl EntityKind for $name{}
+            impl seal::EntityKindMarkerSealed for $name{}
+            impl EntityKindMarker for $name{}
         };
-        ($($name: ident),+) =>{
+        ($($name: ident => $doc: literal),+) =>{
             $(
-                fhe_entity_kind!(@ $name);
+                entity_kind_marker!(@ $name => $doc);
             )+
         }
 }
-fhe_entity_kind! {
-        PlaintextKind,
-        PlaintextVectorKind,
-        CleartextKind,
-        CleartextVectorKind,
-        LweCiphertextKind,
-        LweCiphertextVectorKind,
-        GlweCiphertextKind,
-        GlweCiphertextVectorKind,
-        GgswCiphertextKind,
-        GgswCiphertextVectorKind,
-        GswCiphertextKind,
-        GswCiphertextVectorKind,
-        LweSecretKeyKind,
-        GlweSecretKeyKind,
-        LweKeyswitchKeyKind,
+entity_kind_marker! {
+        PlaintextKind
+            => "A type encoding the plaintext kind in the type system.",
+        PlaintextVectorKind
+            => "A type encoding the plaintext vector kind in the type system",
+        CleartextKind
+            => "A type encoding the cleartext kind in the type system.",
+        CleartextVectorKind
+            => "A type encoding the cleartext vector kind in the type system.",
+        LweCiphertextKind
+            => "A type encoding the lwe ciphertext kind in the type system.",
+        LweCiphertextVectorKind
+            => "A type encoding the lwe ciphertext vector kind in the type system.",
+        GlweCiphertextKind
+            => "A type encoding the glwe ciphertext kind in the type system.",
+        GlweCiphertextVectorKind
+            => "A type encoding the glwe ciphertext vector kind in the type system.",
+        GgswCiphertextKind
+            => "A type encoding the ggsw ciphertext kind in the type system.",
+        GgswCiphertextVectorKind
+            => "A type encoding the ggsw ciphertext vector kind in the type system.",
+        GswCiphertextKind
+            => "A type encoding the gsw ciphertext kind in the type system.",
+        GswCiphertextVectorKind
+            => "A type encoding the gsw ciphertext vector kind in the type system.",
+        LweSecretKeyKind
+            => "A type encoding the lwe secret key kind in the type system.",
+        GlweSecretKeyKind
+            => "A type encoding the glwe secret key kind in the type system.",
+        LweKeyswitchKeyKind
+            => "A type encoding the lwe keyswitch key kind in the type system.",
         LweBootstrapKeyKind
+            => "A type encoding the lwe bootstrap key kind in the type system."
 }
 
-/// This trait is implemented by watermark types.
+/// This trait is implemented by types encoding the representation on an fhe entity in the type
+/// system.
 ///
-/// Watermark implementors are unsized types which are used to encode the specific representation of
-/// an fhe object we are dealing with. For us, a representation can mean a variety of things:
-/// + Hardware attachment: Is it on cpu gpu fpga ?
-/// + Domain of expression: Is it in Fourier domain ? In standard Domain ? In ntt form ?
-/// + State of change: In fourier was it regularized ?
-/// + Precision: How many bytes does this representation use ?
-pub trait EntityWatermark: sealed::EntityRepresentationSealed {}
+/// By _representation_ here, we mean the format of a given entity, during the execution of the
+/// program. A type implementing this trait should contain every informations needed to completely
+/// define the format, such as:
+///
+/// + The location of the object: Is it in the cpu or the gpu memory ?
+/// + The domain the object is represented in: Is it in the fourier, the ntt, or the standard
+/// domain?
+/// + The precision used to represent the object: Is it 16, 32, 64, 128 bits ?
+pub trait EntityRepresentationMarker: seal::EntityRepresentationMarkerSealed {}
 
-pub trait KeyKind: sealed::KeyKindSeal {}
-macro_rules! key_kind {
-        (@ $name: ident)=>{
+/// This trait is implemented by types encoding a flavor of secret key in the type system.
+///
+/// By _flavor_ here, we mean the different types of secret key that can exist such as binary,
+/// ternary, uniform or gaussian key.
+pub trait KeyFlavorMarker: seal::KeyFlavorMarkerSealed {}
+macro_rules! key_flavor_marker {
+        (@ $name: ident => $doc: literal)=>{
+            #[doc=$doc]
+            #[derive(Debug, Clone, Copy)]
             pub struct $name{}
-            impl sealed::KeyKindSeal for $name{}
-            impl KeyKind for $name{}
+            impl seal::KeyFlavorMarkerSealed for $name{}
+            impl KeyFlavorMarker for $name{}
         };
-        ($($name: ident),+) =>{
+        ($($name: ident => $doc: literal),+) =>{
             $(
-                key_kind!(@ $name);
+                key_flavor_marker!(@ $name => $doc);
             )+
         }
     }
-key_kind! {
-    BinaryKeyKind,
-    TernaryKeyKind,
-    GaussianKeyKind
+key_flavor_marker! {
+    BinaryKeyFlavor => "A type encoding the binary key flavor in the type system.",
+    TernaryKeyFlavor => "A type encoding the ternary key flavor in the type system.",
+    GaussianKeyFlavor => "A type encoding the gaussian key flavor in the type system."
 }
 
-pub(crate) mod sealed {
-    pub(crate) trait EntityRepresentationSealed {}
-    pub(crate) trait EntityKindSeal {}
-    pub(crate) trait KeyKindSeal {}
+pub(crate) mod seal {
+    pub trait EntityRepresentationMarkerSealed {}
+    pub trait EntityKindMarkerSealed {}
+    pub trait KeyFlavorMarkerSealed {}
 }

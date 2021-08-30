@@ -1,35 +1,41 @@
-//! Engines are types which can be used to perform operations on fhe entities. Those engines may
-//! contain the necessary side-resources needed to execute the operations they declare. Every
-//! operation is defined by an operation trait. Those operation traits are meant to expose two entry
-//! points:
+//! This module contains the specification for fhe engines.
+//!
+//! Engines are types which can be used to perform operations on fhe entities. Those engines contain
+//! the necessary side-resources needed to execute the operations they declare. Every operation is
+//! defined by an operation trait. Those operation traits are meant to expose two entry points:
 //!
 //! + A safe entry point, returning a result, with an operation-dedicated error. When using this
 //! entry point, concrete will ensure that the necessary invariants are verified at the beginning of
-//! the operation. This can result in a small extra cost. Finally, this entry point is not expected
-//! to panic.
+//! the operation. This can result in a small extra cost. This entry point is not expected to panic.
 //! + An unsafe entry point, returning the raw result if any. When using this entry point, the user
 //! must take care of guaranteeing that the invariants expected by the operation are verified.
-//! Breaking one of those invariants will result in UB, from an FHE point of view. Also, this entry
-//! point may panic, depending on the broken invariant.
-//!
-//! We expect the different backends to each include each, a single engine. This we have a single
-//! entry point for every operations made possible by a backend. This does not mean that a single
-//! instance of this object will leave during the program execution. When working in a multithreaded
-//! environment, we will probably end up with one engine in each thread.
+//! Breaking one of those invariants will result in UB, from an FHE point of view. This entry point
+//! may panic, depending on the broken invariant.
+
+// We expect the different backends to each include, a single engine. This gives a single
+// entry point for every operations made possible by a backend. This does not mean that a single
+// instance of this object will live during the program execution, for example when working in a
+// multithreaded environment.
 use crate::specification::entities::{
     AbstractEntity, LweCiphertextEntity, LweSecretKeyEntity, PlaintextEntity,
 };
+use concrete_commons::parameters::LweSize;
 
-/// A trait shared by all engines.
+/// This trait is the top-level abstraction for engines.
 ///
-/// Basically an engine is expected to have a specific error type attached to him, which could
-/// be used when implementing the operations. This error is supposed to be reduced to only engine
-/// related errors, and not ones related to the operations. For this reason, an engine can only have
-/// a single error type attached to it by the `Engine` trait. If a variant of this error can only be
-/// triggered for a single operation implemented by the engine, then it should probably be moved
-/// upstream, in the operation-dedicated error.
+/// An `AbstractEngine` is nothing more than a type with an associated error type. This error type
+/// encodes the failure cases _specific_ to the engine.
 pub trait AbstractEngine: sealed::EngineSeal {
-    type EngineError: Error;
+    // # Why putting the error type in an abstract super trait ?
+    //
+    // This error is supposed to be reduced to only engine related errors, and not ones related to
+    // the operations. For this reason, it is better for an engine to only have one error shared
+    // among all the operations. If a variant of this error can only be triggered for a single
+    // operation implemented by the engine, then it should probably be moved upstream, in the
+    // operation-dedicated error.
+
+    /// The error associated to the engine.
+    type EngineError: std::error::Error;
 }
 
 macro_rules! engine_error{
@@ -53,7 +59,7 @@ macro_rules! engine_error{
                 }
             }
         }
-        impl<EngineError: Error> Error for $name<EngineError>{}
+        impl<EngineError: std::error::Error> std::error::Error for $name<EngineError>{}
     }
 }
 
@@ -66,14 +72,21 @@ engine_error! {
 /// A trait for engines performing allocations of lwe ciphertexts.
 pub trait LweAllocationEngine<Output, Representation>: AbstractEngine
 where
-    Output: LweCiphertextEntity<Watermark= Representation>,
+    Output: LweCiphertextEntity<Representation= Representation>,
 {
+    /// A safe entry point for allocating lwe ciphertexts.
     fn allocate_lwe(
         &mut self,
         lwe_size: LweSize,
     ) -> Result<Output, LweAllocationError<Self::EngineError>>;
 
-    unsafe fn allocate_lwe_unchecked(&mut self) -> Output;
+    /// An unsafe entry point for allocating lwe ciphertexts.
+    ///
+    /// # Safey
+    ///
+    /// See the documentation of the implementation for the engine you intend to use for details on
+    /// the safety of this function.
+    unsafe fn allocate_lwe_unchecked(&mut self, lwe_size: LweSize) -> Output;
 }
 
 engine_error! {
@@ -86,8 +99,8 @@ engine_error! {
 pub trait ConversionEngine<Kind, Input, Output, InputRepresentation, OutputRepresentation>:
     AbstractEngine
 where
-    Input: AbstractEntity<Kind = Kind, Watermark= InputRepresentation>,
-    Output: AbstractEntity<Kind = Kind, Watermark= OutputRepresentation>,
+    Input: AbstractEntity<Kind = Kind, Representation= InputRepresentation>,
+    Output: AbstractEntity<Kind = Kind, Representation= OutputRepresentation>,
 {
     fn convert(
         &mut self,
@@ -107,9 +120,9 @@ engine_error! {
 /// A trait for engines which encrypt lwe ciphertexts.
 pub trait LweEncryptionEngine<Key, Input, Output, Representation>: AbstractEngine
 where
-    Key: LweSecretKeyEntity<Watermark= Representation>,
-    Input: PlaintextEntity<Watermark= Representation>,
-    Output: LweCiphertextEntity<Watermark= Representation>,
+    Key: LweSecretKeyEntity<Representation= Representation>,
+    Input: PlaintextEntity<Representation= Representation>,
+    Output: LweCiphertextEntity<Representation= Representation>,
 {
     fn encrypt_lwe(
         &mut self,
@@ -130,9 +143,9 @@ engine_error! {
 /// A trait for engines which perform out-of-place lwe addition.
 pub trait LweAdditionEngine<Input1, Input2, Output, Representation>: AbstractEngine
 where
-    Input1: LweCiphertextEntity<Watermark= Representation>,
-    Input2: LweCiphertextEntity<Watermark= Representation>,
-    Output: LweCiphertextEntity<Watermark= Representation>,
+    Input1: LweCiphertextEntity<Representation= Representation>,
+    Input2: LweCiphertextEntity<Representation= Representation>,
+    Output: LweCiphertextEntity<Representation= Representation>,
 {
     fn add_lwe(
         &mut self,
@@ -153,8 +166,8 @@ engine_error! {
 /// A trait for engines which perform inplace lwe addition.
 pub trait LweInplaceAdditionEngine<Input, Output, Representation>: AbstractEngine
 where
-    Input: LweCiphertextEntity<Watermark= Representation>,
-    Output: LweCiphertextEntity<Watermark= Representation>,
+    Input: LweCiphertextEntity<Representation= Representation>,
+    Output: LweCiphertextEntity<Representation= Representation>,
 {
     fn inplace_add_lwe(
         &mut self,
@@ -174,8 +187,8 @@ engine_error! {
 /// A trait for engines which perform out-of-place lwe negation.
 pub trait LweNegationEngine<Input, Output, Representation>: AbstractEngine
 where
-    Input: LweCiphertextEntity<Watermark= Representation>,
-    Output: LweCiphertextEntity<Watermark= Representation>,
+    Input: LweCiphertextEntity<Representation= Representation>,
+    Output: LweCiphertextEntity<Representation= Representation>,
 {
     fn negate_lwe(
         &mut self,
@@ -213,9 +226,9 @@ engine_error! {
 /// A trait for engines which perform out-of-place lwe addition.
 pub trait LweScalarAdditionEngine<Input1, Input2, Output, Representation>: AbstractEngine
 where
-    Input1: LweCiphertextEntity<Watermark= Representation>,
-    Input2: PlaintextEntity<Watermark= Representation>,
-    Output: LweCiphertextEntity<Watermark= Representation>,
+    Input1: LweCiphertextEntity<Representation= Representation>,
+    Input2: PlaintextEntity<Representation= Representation>,
+    Output: LweCiphertextEntity<Representation= Representation>,
 {
     fn scalar_add_lwe(
         &mut self,
@@ -240,8 +253,8 @@ engine_error! {
 /// A trait for engines which perform inplace lwe addition.
 pub trait LweInplaceScalarAdditionEngine<Input, Output, Representation>: AbstractEngine
 where
-    Input: PlaintextEntity<Watermark= Representation>,
-    Output: LweCiphertextEntity<Watermark= Representation>,
+    Input: PlaintextEntity<Representation= Representation>,
+    Output: LweCiphertextEntity<Representation= Representation>,
 {
     fn inplace_scalar_add_lwe(
         &mut self,

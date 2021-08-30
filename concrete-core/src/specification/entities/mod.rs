@@ -2,12 +2,9 @@
 //!
 //! A type representing a given fhe entity used in the concrete scheme _must_ implement one of the
 //! traits contained in this module.
-use concrete_commons::parameters::{
-    CleartextCount, DecompositionBaseLog, DecompositionLevelCount, GlweDimension, LweDimension,
-    PlaintextCount, PolynomialSize,
-};
+use concrete_commons::parameters::{CleartextCount, DecompositionBaseLog, DecompositionLevelCount, GlweDimension, LweDimension, PlaintextCount, PolynomialSize, LweCiphertextCount, GlweCiphertextCount, GswCiphertextCount, GgswCiphertextCount};
 
-/// A module containing marker various traits used for entities.
+/// A module containing various marker traits used for entities.
 pub mod marker;
 use marker::*;
 
@@ -15,11 +12,11 @@ use marker::*;
 ///
 /// An `AbstractEntity` is nothing more but a type with two associated types:
 ///
-/// + One `EntityKind` type which encodes in the type system, the kind of the fhe entity the
+/// + One `EntityKindMarker` type which encodes in the type system, the kind of the fhe entity the
 /// implementor represents (is it a plaintext, an lwe ciphertext, ...).
-/// + One `EntityWatermark` type which encodes in the type system, the _representation_ embodied by
-/// the implementor (is it in the cpu or the gpu memory, is it in the standard or fourier domain, is
-/// it in 32 or 64 bits, ...).
+/// + One `EntityRepresentationMarker` type which encodes in the type system, the _representation_
+/// embodied by the implementor (is it in the cpu or the gpu memory, is it in the standard or
+/// fourier domain, is it in 32 or 64 bits, ...).
 ///
 /// In essence, this trait allows to ensure at compile-time that you operate on compatible entities.
 pub trait AbstractEntity {
@@ -38,9 +35,9 @@ pub trait AbstractEntity {
     // it will help us design better backend-level apis.
 
     /// The _kind_ of the entity.
-    type Kind: EntityKind;
+    type Kind: EntityKindMarker;
     /// The _representation_ this entity embodies.
-    type Watermark: EntityWatermark;
+    type Representation: EntityRepresentationMarker;
 }
 
 /// This trait must be implemented by types embodying a plaintext.
@@ -164,7 +161,7 @@ pub trait LweSecretKeyEntity: AbstractEntity<Kind = LweSecretKeyKind> {
     // in the implementation.
 
     /// The kind of key this type embodies (binary, ternary, uniform, gaussian ...)
-    type KeyKind: KeyKind;
+    type KeyKind: KeyFlavorMarker;
 
     /// Returns the lwe dimension of the key.
     fn lwe_dimension(&self) -> LweDimension;
@@ -177,7 +174,7 @@ pub trait GlweSecretKeyEntity: AbstractEntity<Kind = GlweSecretKeyKind> {
     // in the implementation.
 
     /// The kind of key this type embodies (binary, ternary, uniform, gaussian ...)
-    type Kind: KeyKind;
+    type Kind: KeyFlavorMarker;
 
     /// Returns the glwe dimension of the key.
     fn glwe_dimension(&self) -> GlweDimension;

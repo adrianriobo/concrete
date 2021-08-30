@@ -12,6 +12,22 @@ pub struct CleartextCount(pub usize);
 #[derive(Copy, Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
 pub struct CiphertextCount(pub usize);
 
+/// The number of ciphertexts in an lwe ciphertext list.
+#[derive(Copy, Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
+pub struct LweCiphertextCount(pub usize);
+
+/// The number of ciphertexts in a glwe ciphertext list.
+#[derive(Copy, Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
+pub struct GlweCiphertextCount(pub usize);
+
+/// The number of ciphertexts in a gsw ciphertext list.
+#[derive(Copy, Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
+pub struct GswCiphertextCount(pub usize);
+
+/// The number of ciphertexts in a gsw ciphertext list.
+#[derive(Copy, Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
+pub struct GgswCiphertextCount(pub usize);
+
 /// The number of scalar in an LWE mask + 1 .
 #[derive(Debug, PartialEq, Eq, Copy, Clone, Serialize, Deserialize)]
 pub struct LweSize(pub usize);
