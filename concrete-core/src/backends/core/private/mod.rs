@@ -1,5 +1,3 @@
-#![deny(rustdoc::broken_intra_doc_links)]
-
 #[allow(unused_macros)]
 macro_rules! assert_delta {
     ($A:expr, $B:expr, $d:expr) => {

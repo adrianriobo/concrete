@@ -5,8 +5,8 @@
 use concrete_commons::parameters::{CleartextCount, DecompositionBaseLog, DecompositionLevelCount, GlweDimension, LweDimension, PlaintextCount, PolynomialSize, LweCiphertextCount, GlweCiphertextCount, GswCiphertextCount, GgswCiphertextCount};
 
 /// A module containing various marker traits used for entities.
-pub mod marker;
-use marker::*;
+pub mod markers;
+use markers::*;
 
 /// This trait is the top-level abstraction for entities of the concrete scheme.
 ///
@@ -60,12 +60,18 @@ pub trait CleartextVectorEntity: AbstractEntity<Kind = CleartextVectorKind> {
 
 /// This trait must be implemented by types embodying an lwe ciphertext.
 pub trait LweCiphertextEntity: AbstractEntity<Kind = LweCiphertextKind> {
+    /// The flavor of key the ciphertext was encrypted with.
+    type KeyFlavor: KeyFlavorMarker;
+
     /// Returns the lwe dimension of the ciphertext.
     fn lwe_dimension(&self) -> LweDimension;
 }
 
 /// This trait must be implemented by types embodying an lwe ciphertext vector.
 pub trait LweCiphertextVectorEntity: AbstractEntity<Kind = LweCiphertextVectorKind> {
+    /// The flavor of key the ciphertext was encrypted with.
+    type KeyFlavor: KeyFlavorMarker;
+
     /// Returns the lwe dimension of the ciphertexts.
     fn lwe_dimension(&self) -> LweDimension;
 
@@ -75,6 +81,9 @@ pub trait LweCiphertextVectorEntity: AbstractEntity<Kind = LweCiphertextVectorKi
 
 /// This trait must be implemented by types embodying a glwe ciphertext.
 pub trait GlweCiphertextEntity: AbstractEntity<Kind = GlweCiphertextKind> {
+    /// The flavor of key the ciphertext was encrypted with.
+    type KeyFlavor: KeyFlavorMarker;
+
     /// Returns the glwe dimension of the ciphertext.
     fn glwe_dimension(&self) -> GlweDimension;
 
@@ -84,6 +93,9 @@ pub trait GlweCiphertextEntity: AbstractEntity<Kind = GlweCiphertextKind> {
 
 /// This trait must be implemented by types embodying a glwe ciphertext vector.
 pub trait GlweCiphertextVectorEntity: AbstractEntity<Kind = GlweCiphertextVectorKind> {
+    /// The flavor of key the ciphertext was encrypted with.
+    type KeyFlavor: KeyFlavorMarker;
+
     /// Returns the glwe dimension of the ciphertexts.
     fn glwe_dimension(&self) -> GlweDimension;
 
@@ -91,11 +103,14 @@ pub trait GlweCiphertextVectorEntity: AbstractEntity<Kind = GlweCiphertextVector
     fn polynomial_size(&self) -> PolynomialSize;
 
     /// Returns the number of ciphertexts in the vector.
-    fn glwe_ciphertxt_count(&self) -> GlweCiphertextCount;
+    fn glwe_ciphertext_count(&self) -> GlweCiphertextCount;
 }
 
 /// This trait must be implemented by types embodying a gsw ciphertext.
 pub trait GswCiphertextEntity: AbstractEntity<Kind = GswCiphertextKind> {
+    /// The flavor of key the ciphertext was encrypted with.
+    type KeyFlavor: KeyFlavorMarker;
+
     /// Returns the lwe dimension of the ciphertext.
     fn lwe_dimension(&self) -> LweDimension;
 
@@ -108,6 +123,9 @@ pub trait GswCiphertextEntity: AbstractEntity<Kind = GswCiphertextKind> {
 
 /// This trait must be implemented by types embodying a gsw ciphertext vector.
 pub trait GswCiphertextVectorEntity: AbstractEntity<Kind = GswCiphertextVectorKind> {
+    /// The flavor of key the ciphertext was encrypted with.
+    type KeyFlavor: KeyFlavorMarker;
+
     /// Returns the lwe dimension of the ciphertexts.
     fn lwe_dimension(&self) -> LweDimension;
 
@@ -123,8 +141,11 @@ pub trait GswCiphertextVectorEntity: AbstractEntity<Kind = GswCiphertextVectorKi
 
 /// This trait must be implemented by types embodying a ggsw ciphertext.
 pub trait GgswCiphertextEntity: AbstractEntity<Kind = GgswCiphertextKind> {
+    /// The flavor of key the ciphertext was encrypted with.
+    type KeyFlavor: KeyFlavorMarker;
+
     /// Returns the glwe dimension of the ciphertext.
-    fn glwe_dimension(&self) -> GlweDimension;
+    fn glwe_dimension(&self) -> GlweDimensioncould;
 
     /// Returns the polynomial size of the ciphertext.
     fn polynomial_size(&self) -> PolynomialSize;
@@ -138,6 +159,9 @@ pub trait GgswCiphertextEntity: AbstractEntity<Kind = GgswCiphertextKind> {
 
 /// This trait must be implemented by types embodying a ggsw ciphertext vector.
 pub trait GgswCiphertextVectorEntity: AbstractEntity<Kind = GgswCiphertextVectorKind> {
+    /// The flavor of key the ciphertext was encrypted with.
+    type KeyFlavor: KeyFlavorMarker;
+
     /// Returns the glwe dimension of the ciphertexts.
     fn glwe_dimension(&self) -> GlweDimension;
 
@@ -156,12 +180,8 @@ pub trait GgswCiphertextVectorEntity: AbstractEntity<Kind = GgswCiphertextVector
 
 /// This trait must be implemented by types embodying an lwe secret key.
 pub trait LweSecretKeyEntity: AbstractEntity<Kind = LweSecretKeyKind> {
-    // For the same reasons exposed in `AbstractEntity`, we prefer to use the key kind as an
-    // associated type instead of a generic parameter which would encourage broadly defined types
-    // in the implementation.
-
-    /// The kind of key this type embodies (binary, ternary, uniform, gaussian ...)
-    type KeyKind: KeyFlavorMarker;
+    /// The flavor of this key
+    type KeyFlavor: KeyFlavorMarker;
 
     /// Returns the lwe dimension of the key.
     fn lwe_dimension(&self) -> LweDimension;
@@ -169,12 +189,8 @@ pub trait LweSecretKeyEntity: AbstractEntity<Kind = LweSecretKeyKind> {
 
 /// This trait must be implemented by types embodying a glwe secret key.
 pub trait GlweSecretKeyEntity: AbstractEntity<Kind = GlweSecretKeyKind> {
-    // For the same reasons exposed in `AbstractEntity`, we prefer to use the key kind as an
-    // associated type instead of a generic parameter which would encourage broadly defined types
-    // in the implementation.
-
-    /// The kind of key this type embodies (binary, ternary, uniform, gaussian ...)
-    type Kind: KeyFlavorMarker;
+    /// The flavor of this key
+    type KeyFlavor: KeyFlavorMarker;
 
     /// Returns the glwe dimension of the key.
     fn glwe_dimension(&self) -> GlweDimension;
@@ -185,6 +201,9 @@ pub trait GlweSecretKeyEntity: AbstractEntity<Kind = GlweSecretKeyKind> {
 
 /// This trait must be implemented by types embodying an lwe keyswitch key.
 pub trait LweKeyswitchKeyEntity: AbstractEntity<Kind = LweKeyswitchKeyKind> {
+    /// The flavor of key the ciphertext was encrypted with.
+    type KeyFlavor: KeyFlavorMarker;
+
     /// Returns the input lwe dimension of the key.
     fn input_lwe_dimension(&self) -> LweDimension;
 
@@ -200,6 +219,12 @@ pub trait LweKeyswitchKeyEntity: AbstractEntity<Kind = LweKeyswitchKeyKind> {
 
 /// This trait must be implemented by types embodying an lwe bootstrap key.
 pub trait LweBootstrapKeyEntity: AbstractEntity<Kind = LweBootstrapKeyKind> {
+    /// The flavor of key the input ciphertext is encrypted with.
+    type InputKeyFlavor: KeyFlavorMarker;
+
+    /// The flavor of the key the output ciphertext is encrypted with.
+    type OutputKeyFlavor: KeyFlavorMarker;
+
     /// Returns the glwe dimension of the key.
     fn glwe_dimension(&self) -> GlweDimension;
 

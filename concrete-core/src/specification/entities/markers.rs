@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 /// This trait is implemented by types encoding the kind of an fhe entity in the type system.
 ///
 /// By _kind_ here, we mean the different objects we manipulate at an abstract level (like
@@ -63,7 +65,10 @@ entity_kind_marker! {
 /// + The domain the object is represented in: Is it in the fourier, the ntt, or the standard
 /// domain?
 /// + The precision used to represent the object: Is it 16, 32, 64, 128 bits ?
-pub trait EntityRepresentationMarker: seal::EntityRepresentationMarkerSealed {}
+///
+/// These informations are left to the backend to specify, and are not supposed to encode fhe
+/// related things.
+pub trait EntityRepresentationMarker: seal::EntityRepresentationMarkerSealed{}
 
 /// This trait is implemented by types encoding a flavor of secret key in the type system.
 ///

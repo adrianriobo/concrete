@@ -1,3 +1,4 @@
+#![deny(rustdoc::broken_intra_doc_links)]
 //! Welcome to the `concrete-core` documentation!
 //!
 //! # Fully Homomorphic Encryption
@@ -24,4 +25,4 @@
 pub mod specification;
 
 // /// A module containing various backends implementing the concrete fhe scheme.
-// pub mod backends;
+pub mod backends;

@@ -25,7 +25,7 @@ use concrete_commons::parameters::LweSize;
 ///
 /// An `AbstractEngine` is nothing more than a type with an associated error type. This error type
 /// encodes the failure cases _specific_ to the engine.
-pub trait AbstractEngine: sealed::EngineSeal {
+pub trait AbstractEngine: sealed::AbstractEngineSeal {
     // # Why putting the error type in an abstract super trait ?
     //
     // This error is supposed to be reduced to only engine related errors, and not ones related to
@@ -118,11 +118,11 @@ engine_error! {
 }
 
 /// A trait for engines which encrypt lwe ciphertexts.
-pub trait LweEncryptionEngine<Key, Input, Output, Representation>: AbstractEngine
+pub trait LweEncryptionEngine<Key, Input, Output, Flavor, Representation>: AbstractEngine
 where
-    Key: LweSecretKeyEntity<Representation= Representation>,
+    Key: LweSecretKeyEntity<Representation= Representation, KeyFlavor= Flavor>,
     Input: PlaintextEntity<Representation= Representation>,
-    Output: LweCiphertextEntity<Representation= Representation>,
+    Output: LweCiphertextEntity<Representation= Representation, KeyFlavor= Flavor>,
 {
     fn encrypt_lwe(
         &mut self,
@@ -141,11 +141,11 @@ engine_error! {
 }
 
 /// A trait for engines which perform out-of-place lwe addition.
-pub trait LweAdditionEngine<Input1, Input2, Output, Representation>: AbstractEngine
+pub trait LweAdditionEngine<Input1, Input2, Output, Representation, Flavor>: AbstractEngine
 where
-    Input1: LweCiphertextEntity<Representation= Representation>,
-    Input2: LweCiphertextEntity<Representation= Representation>,
-    Output: LweCiphertextEntity<Representation= Representation>,
+    Input1: LweCiphertextEntity<Representation= Representation, KeyFlavor= Flavor>,
+    Input2: LweCiphertextEntity<Representation= Representation, KeyFlavor= Flavor>,
+    Output: LweCiphertextEntity<Representation= Representation, KeyFlavor= Flavor>,
 {
     fn add_lwe(
         &mut self,
@@ -164,10 +164,10 @@ engine_error! {
 }
 
 /// A trait for engines which perform inplace lwe addition.
-pub trait LweInplaceAdditionEngine<Input, Output, Representation>: AbstractEngine
+pub trait LweInplaceAdditionEngine<Input, Output, Representation, Flavor>: AbstractEngine
 where
-    Input: LweCiphertextEntity<Representation= Representation>,
-    Output: LweCiphertextEntity<Representation= Representation>,
+    Input: LweCiphertextEntity<Representation= Representation, KeyFlavor= Flavor>,
+    Output: LweCiphertextEntity<Representation= Representation, KeyFlavor= Flavor>,
 {
     fn inplace_add_lwe(
         &mut self,
@@ -185,10 +185,10 @@ engine_error! {
 }
 
 /// A trait for engines which perform out-of-place lwe negation.
-pub trait LweNegationEngine<Input, Output, Representation>: AbstractEngine
+pub trait LweNegationEngine<Input, Output, Representation, Flavor>: AbstractEngine
 where
-    Input: LweCiphertextEntity<Representation= Representation>,
-    Output: LweCiphertextEntity<Representation= Representation>,
+    Input: LweCiphertextEntity<Representation= Representation, KeyFlavor=Flavor>,
+    Output: LweCiphertextEntity<Representation= Representation, KeyFlavor=Flavor>,
 {
     fn negate_lwe(
         &mut self,
@@ -267,5 +267,5 @@ where
 
 // This makes it impossible for types outside concrete to implement operations.
 pub(crate) mod sealed {
-    pub(crate) trait EngineSeal {}
+    pub(crate) trait AbstractEngineSeal {}
 }
