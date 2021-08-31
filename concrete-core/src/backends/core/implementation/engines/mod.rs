@@ -1,10 +1,7 @@
-use std::fmt::{Display, Formatter};
-use std::error::Error;
 use crate::specification::engines::sealed::AbstractEngineSeal;
-use crate::specification::engines::{AbstractEngine, LweAllocationEngine};
-use crate::backends::core::crypto::lwe::LweCiphertext;
-
-
+use crate::specification::engines::{AbstractEngine};
+use std::error::Error;
+use std::fmt::{Display, Formatter};
 
 /// The error which can occur in the execution of fhe operations, due to the core implementation.
 ///
@@ -16,20 +13,17 @@ use crate::backends::core::crypto::lwe::LweCiphertext;
 pub enum EngineError {}
 
 impl Display for EngineError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self{
-            _ => unreachable!()
-        }
+    fn fmt(&self, _f: &mut Formatter<'_>) -> std::fmt::Result {
+        unreachable!()
     }
 }
 
 impl Error for EngineError {}
 
-
 /// The main engine exposed by the core backend.
-pub struct CoreEngine{}
+pub struct CoreEngine {}
 
-impl AbstractEngineSeal for CoreEngine{}
-impl AbstractEngine for CoreEngine{
-    type EngineError = CoreEngine;
+impl AbstractEngineSeal for CoreEngine {}
+impl AbstractEngine for CoreEngine {
+    type EngineError = EngineError;
 }

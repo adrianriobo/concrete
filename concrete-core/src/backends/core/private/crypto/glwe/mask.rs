@@ -1,6 +1,7 @@
-use crate::math::polynomial::{Polynomial, PolynomialList};
-use crate::math::tensor::{AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, Tensor};
-use crate::tensor_traits;
+use crate::backends::core::private::math::polynomial::{Polynomial, PolynomialList};
+use crate::backends::core::private::math::tensor::{
+    tensor_traits, AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, Tensor,
+};
 use concrete_commons::parameters::PolynomialSize;
 
 /// The mask of a GLWE ciphertext

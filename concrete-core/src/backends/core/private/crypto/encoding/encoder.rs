@@ -1,5 +1,5 @@
-use crate::math::tensor::{AsMutTensor, AsRefTensor};
-use crate::math::torus::{FromTorus, IntoTorus, UnsignedTorus};
+use crate::backends::core::private::math::tensor::{AsMutTensor, AsRefTensor};
+use crate::backends::core::private::math::torus::{FromTorus, IntoTorus, UnsignedTorus};
 
 use super::{Cleartext, CleartextList, Plaintext, PlaintextList};
 use concrete_commons::numeric::{FloatingPoint, Numeric};

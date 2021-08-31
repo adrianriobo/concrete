@@ -1,14 +1,17 @@
-use crate::crypto::encoding::{Plaintext, PlaintextList};
-use crate::crypto::ggsw::GgswCiphertext;
-use crate::crypto::glwe::{GlweCiphertext, GlweList};
-use crate::crypto::secret::LweSecretKey;
-use crate::math::tensor::{AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, IntoTensor, Tensor};
-use crate::{ck_dim_div, ck_dim_eq};
+use crate::backends::core::private::crypto::encoding::{Plaintext, PlaintextList};
+use crate::backends::core::private::crypto::ggsw::GgswCiphertext;
+use crate::backends::core::private::crypto::glwe::{GlweCiphertext, GlweList};
+use crate::backends::core::private::crypto::secret::LweSecretKey;
+use crate::backends::core::private::math::tensor::{
+    ck_dim_div, ck_dim_eq, AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, IntoTensor, Tensor,
+};
 
-use crate::crypto::secret::generators::{EncryptionRandomGenerator, SecretRandomGenerator};
-use crate::math::polynomial::PolynomialList;
-use crate::math::random::{Gaussian, RandomGenerable};
-use crate::math::torus::UnsignedTorus;
+use crate::backends::core::private::crypto::secret::generators::{
+    EncryptionRandomGenerator, SecretRandomGenerator,
+};
+use crate::backends::core::private::math::polynomial::PolynomialList;
+use crate::backends::core::private::math::random::{Gaussian, RandomGenerable};
+use crate::backends::core::private::math::torus::UnsignedTorus;
 use concrete_commons::dispersion::DispersionParameter;
 use concrete_commons::key_kinds::{
     BinaryKeyKind, GaussianKeyKind, KeyKind, TernaryKeyKind, UniformKeyKind,

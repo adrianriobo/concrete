@@ -1,8 +1,9 @@
 use std::fmt::Debug;
 use std::iter::Iterator;
 
-use crate::math::tensor::{AsMutSlice, AsMutTensor, AsRefTensor, Tensor};
-use crate::{ck_dim_eq, tensor_traits};
+use crate::backends::core::private::math::tensor::{
+    ck_dim_eq, tensor_traits, AsMutSlice, AsMutTensor, AsRefTensor, Tensor,
+};
 
 use super::*;
 use concrete_commons::numeric::UnsignedInteger;

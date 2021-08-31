@@ -1,5 +1,7 @@
-use crate::math::decomposition::{SignedDecompositionIter, TensorSignedDecompositionIter};
-use crate::math::tensor::{AsMutTensor, AsRefTensor, Tensor};
+use crate::backends::core::private::math::decomposition::{
+    SignedDecompositionIter, TensorSignedDecompositionIter,
+};
+use crate::backends::core::private::math::tensor::{AsMutTensor, AsRefTensor, Tensor};
 use concrete_commons::numeric::{Numeric, UnsignedInteger};
 use concrete_commons::parameters::{DecompositionBaseLog, DecompositionLevelCount};
 use std::marker::PhantomData;

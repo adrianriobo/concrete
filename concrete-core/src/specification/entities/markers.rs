@@ -68,7 +68,7 @@ entity_kind_marker! {
 ///
 /// These informations are left to the backend to specify, and are not supposed to encode fhe
 /// related things.
-pub trait EntityRepresentationMarker: seal::EntityRepresentationMarkerSealed{}
+pub trait EntityRepresentationMarker: seal::EntityRepresentationMarkerSealed {}
 
 /// This trait is implemented by types encoding a flavor of secret key in the type system.
 ///

@@ -1,4 +1,4 @@
-use crate::math::tensor::Tensor;
+use crate::backends::core::private::math::tensor::Tensor;
 
 use super::AsRefSlice;
 

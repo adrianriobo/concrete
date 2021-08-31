@@ -1,6 +1,7 @@
-use crate::math::polynomial::Polynomial;
-use crate::math::tensor::{AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, IntoTensor, Tensor};
-use crate::tensor_traits;
+use crate::backends::core::private::math::polynomial::Polynomial;
+use crate::backends::core::private::math::tensor::{
+    tensor_traits, AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, IntoTensor, Tensor,
+};
 
 /// The body of a GLWE ciphertext.
 pub struct GlweBody<Cont> {

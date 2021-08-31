@@ -1,9 +1,10 @@
 use super::{GlweBody, GlweMask};
-use crate::crypto::lwe::LweCiphertext;
-use crate::math::polynomial::{MonomialDegree, PolynomialList};
-use crate::math::tensor::{AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, Tensor};
-use crate::math::torus::UnsignedTorus;
-use crate::tensor_traits;
+use crate::backends::core::private::crypto::lwe::LweCiphertext;
+use crate::backends::core::private::math::polynomial::{MonomialDegree, PolynomialList};
+use crate::backends::core::private::math::tensor::{
+    tensor_traits, AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, Tensor,
+};
+use crate::backends::core::private::math::torus::UnsignedTorus;
 use concrete_commons::parameters::{GlweDimension, GlweSize, PolynomialSize};
 use serde::{Deserialize, Serialize};
 

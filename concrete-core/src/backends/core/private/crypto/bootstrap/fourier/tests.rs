@@ -9,18 +9,24 @@ use concrete_commons::parameters::{
     PlaintextCount, PolynomialSize,
 };
 
-use crate::crypto::bootstrap::fourier::constant_sample_extract;
-use crate::crypto::bootstrap::{Bootstrap, FourierBootstrapKey, StandardBootstrapKey};
-use crate::crypto::encoding::{Plaintext, PlaintextList};
-use crate::crypto::glwe::GlweCiphertext;
-use crate::crypto::lwe::LweCiphertext;
-use crate::crypto::secret::generators::{EncryptionRandomGenerator, SecretRandomGenerator};
-use crate::crypto::secret::{GlweSecretKey, LweSecretKey};
-use crate::math::fft::Complex64;
-use crate::math::random::RandomGenerator;
-use crate::math::tensor::{AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, IntoTensor, Tensor};
-use crate::math::torus::UnsignedTorus;
-use crate::test_tools::{assert_delta_std_dev, assert_noise_distribution};
+use crate::backends::core::private::crypto::bootstrap::fourier::constant_sample_extract;
+use crate::backends::core::private::crypto::bootstrap::{
+    Bootstrap, FourierBootstrapKey, StandardBootstrapKey,
+};
+use crate::backends::core::private::crypto::encoding::{Plaintext, PlaintextList};
+use crate::backends::core::private::crypto::glwe::GlweCiphertext;
+use crate::backends::core::private::crypto::lwe::LweCiphertext;
+use crate::backends::core::private::crypto::secret::generators::{
+    EncryptionRandomGenerator, SecretRandomGenerator,
+};
+use crate::backends::core::private::crypto::secret::{GlweSecretKey, LweSecretKey};
+use crate::backends::core::private::math::fft::Complex64;
+use crate::backends::core::private::math::random::RandomGenerator;
+use crate::backends::core::private::math::tensor::{
+    AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, IntoTensor, Tensor,
+};
+use crate::backends::core::private::math::torus::UnsignedTorus;
+use crate::backends::core::private::test_tools::{assert_delta_std_dev, assert_noise_distribution};
 
 fn test_bootstrap_noise<T: UnsignedTorus + npe::Cross>() {
     //! test that the bootstrapping noise matches the theoretical noise

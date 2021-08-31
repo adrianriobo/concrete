@@ -1,7 +1,8 @@
-use crate::crypto::glwe::GlweCiphertext;
-use crate::math::decomposition::DecompositionLevel;
-use crate::math::tensor::{AsMutTensor, AsRefSlice, AsRefTensor, Tensor};
-use crate::{ck_dim_div, tensor_traits};
+use crate::backends::core::private::crypto::glwe::GlweCiphertext;
+use crate::backends::core::private::math::decomposition::DecompositionLevel;
+use crate::backends::core::private::math::tensor::{
+    ck_dim_div, tensor_traits, AsMutTensor, AsRefSlice, AsRefTensor, Tensor,
+};
 use concrete_commons::parameters::{GlweSize, PolynomialSize};
 #[cfg(feature = "multithread")]
 use rayon::prelude::*;

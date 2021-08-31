@@ -6,14 +6,16 @@ use concrete_fftw::types::c64;
 use concrete_commons::numeric::{CastInto, SignedInteger, UnsignedInteger};
 use concrete_commons::parameters::PolynomialSize;
 
-use crate::math::fft::twiddles::{BackwardCorrector, ForwardCorrector};
-use crate::math::polynomial::Polynomial;
-use crate::math::tensor::{AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor};
-use crate::math::torus::UnsignedTorus;
-use crate::{ck_dim_eq, zip};
+use crate::backends::core::private::math::fft::twiddles::{BackwardCorrector, ForwardCorrector};
+use crate::backends::core::private::math::polynomial::Polynomial;
+use crate::backends::core::private::math::tensor::{
+    ck_dim_eq, AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor,
+};
+use crate::backends::core::private::math::torus::UnsignedTorus;
+use crate::backends::core::private::utils::zip;
 
 use super::{Complex64, Correctors, FourierPolynomial};
-use crate::math::fft::plan::Plans;
+use crate::backends::core::private::math::fft::plan::Plans;
 use std::cell::RefCell;
 
 /// A fast fourier transformer.

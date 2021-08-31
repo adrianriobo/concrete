@@ -1,6 +1,6 @@
-use crate::math::random::{Gaussian, RandomGenerable, RandomGenerator};
-use crate::math::tensor::Tensor;
-use crate::math::torus::UnsignedTorus;
+use crate::backends::core::private::math::random::{Gaussian, RandomGenerable, RandomGenerator};
+use crate::backends::core::private::math::tensor::Tensor;
+use crate::backends::core::private::math::torus::UnsignedTorus;
 use concrete_commons::dispersion::DispersionParameter;
 
 /// A random number generator which can be used to generate secret keys.

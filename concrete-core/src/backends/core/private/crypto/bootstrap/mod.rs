@@ -6,10 +6,10 @@
 pub use fourier::FourierBootstrapKey;
 pub use standard::StandardBootstrapKey;
 
-use crate::crypto::glwe::GlweCiphertext;
-use crate::crypto::lwe::LweCiphertext;
-use crate::math::tensor::{AsMutTensor, AsRefTensor};
-use crate::math::torus::UnsignedTorus;
+use crate::backends::core::private::crypto::glwe::GlweCiphertext;
+use crate::backends::core::private::crypto::lwe::LweCiphertext;
+use crate::backends::core::private::math::tensor::{AsMutTensor, AsRefTensor};
+use crate::backends::core::private::math::torus::UnsignedTorus;
 
 mod fourier;
 mod standard;
@@ -115,10 +115,12 @@ pub trait Bootstrap {
 
 #[cfg(all(test, feature = "multithread"))]
 mod test {
-    use crate::crypto::bootstrap::StandardBootstrapKey;
-    use crate::crypto::secret::generators::{EncryptionRandomGenerator, SecretRandomGenerator};
-    use crate::crypto::secret::{GlweSecretKey, LweSecretKey};
-    use crate::math::torus::UnsignedTorus;
+    use crate::backends::core::private::crypto::bootstrap::StandardBootstrapKey;
+    use crate::backends::core::private::crypto::secret::generators::{
+        EncryptionRandomGenerator, SecretRandomGenerator,
+    };
+    use crate::backends::core::private::crypto::secret::{GlweSecretKey, LweSecretKey};
+    use crate::backends::core::private::math::torus::UnsignedTorus;
     use concrete_commons::dispersion::StandardDev;
     use concrete_commons::parameters::{
         DecompositionBaseLog, DecompositionLevelCount, GlweDimension, LweDimension, PolynomialSize,

@@ -1,5 +1,5 @@
-use crate::math::decomposition::DecompositionLevel;
-use crate::math::tensor::{AsMutTensor, Tensor};
+use crate::backends::core::private::math::decomposition::DecompositionLevel;
+use crate::backends::core::private::math::tensor::{AsMutTensor, Tensor};
 use concrete_commons::numeric::{Numeric, UnsignedInteger};
 use concrete_commons::parameters::DecompositionBaseLog;
 use serde::{Deserialize, Serialize};

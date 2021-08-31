@@ -1,8 +1,8 @@
-use crate::math::decomposition::SignedDecomposer;
-use crate::math::random::{RandomGenerable, Uniform};
-use crate::math::tensor::Tensor;
-use crate::math::torus::UnsignedTorus;
-use crate::test_tools::{any_uint, any_usize, random_usize_between};
+use crate::backends::core::private::math::decomposition::SignedDecomposer;
+use crate::backends::core::private::math::random::{RandomGenerable, Uniform};
+use crate::backends::core::private::math::tensor::Tensor;
+use crate::backends::core::private::math::torus::UnsignedTorus;
+use crate::backends::core::private::test_tools::{any_uint, any_usize, random_usize_between};
 use concrete_commons::numeric::{Numeric, SignedInteger, UnsignedInteger};
 use concrete_commons::parameters::{DecompositionBaseLog, DecompositionLevelCount};
 use std::fmt::Debug;

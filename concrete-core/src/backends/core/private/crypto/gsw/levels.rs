@@ -1,7 +1,8 @@
-use crate::crypto::lwe::LweCiphertext;
-use crate::math::decomposition::DecompositionLevel;
-use crate::math::tensor::{AsMutTensor, AsRefSlice, AsRefTensor, Tensor};
-use crate::{ck_dim_eq, tensor_traits};
+use crate::backends::core::private::crypto::lwe::LweCiphertext;
+use crate::backends::core::private::math::decomposition::DecompositionLevel;
+use crate::backends::core::private::math::tensor::{
+    ck_dim_eq, tensor_traits, AsMutTensor, AsRefSlice, AsRefTensor, Tensor,
+};
 use concrete_commons::parameters::LweSize;
 #[cfg(feature = "multithread")]
 use rayon::prelude::*;

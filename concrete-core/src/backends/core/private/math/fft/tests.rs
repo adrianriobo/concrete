@@ -1,8 +1,10 @@
-use crate::math::fft::twiddles::{BackwardCorrector, ForwardCorrector};
-use crate::math::fft::{Complex64, Fft, FourierPolynomial, SerializableComplex64};
-use crate::math::polynomial::Polynomial;
-use crate::math::random::RandomGenerator;
-use crate::math::tensor::{AsMutTensor, AsRefTensor};
+use crate::backends::core::private::math::fft::twiddles::{BackwardCorrector, ForwardCorrector};
+use crate::backends::core::private::math::fft::{
+    Complex64, Fft, FourierPolynomial, SerializableComplex64,
+};
+use crate::backends::core::private::math::polynomial::Polynomial;
+use crate::backends::core::private::math::random::RandomGenerator;
+use crate::backends::core::private::math::tensor::{AsMutTensor, AsRefTensor};
 use concrete_commons::numeric::Numeric;
 use concrete_commons::parameters::PolynomialSize;
 use concrete_fftw::array::AlignedVec;

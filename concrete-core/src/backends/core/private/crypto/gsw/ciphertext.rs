@@ -1,10 +1,12 @@
 use std::cell::RefCell;
 
-use crate::crypto::lwe::{LweCiphertext, LweList};
-use crate::math::decomposition::{DecompositionLevel, SignedDecomposer};
-use crate::math::tensor::{AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, IntoTensor, Tensor};
-use crate::math::torus::UnsignedTorus;
-use crate::{ck_dim_div, ck_dim_eq, zip, zip_args};
+use crate::backends::core::private::crypto::lwe::{LweCiphertext, LweList};
+use crate::backends::core::private::math::decomposition::{DecompositionLevel, SignedDecomposer};
+use crate::backends::core::private::math::tensor::{
+    ck_dim_div, ck_dim_eq, AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, IntoTensor, Tensor,
+};
+use crate::backends::core::private::math::torus::UnsignedTorus;
+use crate::backends::core::private::utils::{zip, zip_args};
 
 use super::GswLevelMatrix;
 

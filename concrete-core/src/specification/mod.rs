@@ -6,5 +6,5 @@
 //! This module contains different traits which, united, provide a layout of how the different
 //! backends implement the concrete scheme.
 
-pub mod entities;
 pub mod engines;
+pub mod entities;

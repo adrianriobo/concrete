@@ -72,7 +72,7 @@ engine_error! {
 /// A trait for engines performing allocations of lwe ciphertexts.
 pub trait LweAllocationEngine<Output, Representation>: AbstractEngine
 where
-    Output: LweCiphertextEntity<Representation= Representation>,
+    Output: LweCiphertextEntity<Representation = Representation>,
 {
     /// A safe entry point for allocating lwe ciphertexts.
     fn allocate_lwe(
@@ -99,8 +99,8 @@ engine_error! {
 pub trait ConversionEngine<Kind, Input, Output, InputRepresentation, OutputRepresentation>:
     AbstractEngine
 where
-    Input: AbstractEntity<Kind = Kind, Representation= InputRepresentation>,
-    Output: AbstractEntity<Kind = Kind, Representation= OutputRepresentation>,
+    Input: AbstractEntity<Kind = Kind, Representation = InputRepresentation>,
+    Output: AbstractEntity<Kind = Kind, Representation = OutputRepresentation>,
 {
     fn convert(
         &mut self,
@@ -120,9 +120,9 @@ engine_error! {
 /// A trait for engines which encrypt lwe ciphertexts.
 pub trait LweEncryptionEngine<Key, Input, Output, Flavor, Representation>: AbstractEngine
 where
-    Key: LweSecretKeyEntity<Representation= Representation, KeyFlavor= Flavor>,
-    Input: PlaintextEntity<Representation= Representation>,
-    Output: LweCiphertextEntity<Representation= Representation, KeyFlavor= Flavor>,
+    Key: LweSecretKeyEntity<Representation = Representation, KeyFlavor = Flavor>,
+    Input: PlaintextEntity<Representation = Representation>,
+    Output: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
 {
     fn encrypt_lwe(
         &mut self,
@@ -141,11 +141,12 @@ engine_error! {
 }
 
 /// A trait for engines which perform out-of-place lwe addition.
-pub trait LweAdditionEngine<Input1, Input2, Output, Representation, Flavor>: AbstractEngine
+pub trait LweAdditionEngine<Input1, Input2, Output, Representation, Flavor>:
+    AbstractEngine
 where
-    Input1: LweCiphertextEntity<Representation= Representation, KeyFlavor= Flavor>,
-    Input2: LweCiphertextEntity<Representation= Representation, KeyFlavor= Flavor>,
-    Output: LweCiphertextEntity<Representation= Representation, KeyFlavor= Flavor>,
+    Input1: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
+    Input2: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
+    Output: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
 {
     fn add_lwe(
         &mut self,
@@ -166,8 +167,8 @@ engine_error! {
 /// A trait for engines which perform inplace lwe addition.
 pub trait LweInplaceAdditionEngine<Input, Output, Representation, Flavor>: AbstractEngine
 where
-    Input: LweCiphertextEntity<Representation= Representation, KeyFlavor= Flavor>,
-    Output: LweCiphertextEntity<Representation= Representation, KeyFlavor= Flavor>,
+    Input: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
+    Output: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
 {
     fn inplace_add_lwe(
         &mut self,
@@ -187,8 +188,8 @@ engine_error! {
 /// A trait for engines which perform out-of-place lwe negation.
 pub trait LweNegationEngine<Input, Output, Representation, Flavor>: AbstractEngine
 where
-    Input: LweCiphertextEntity<Representation= Representation, KeyFlavor=Flavor>,
-    Output: LweCiphertextEntity<Representation= Representation, KeyFlavor=Flavor>,
+    Input: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
+    Output: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
 {
     fn negate_lwe(
         &mut self,
@@ -226,9 +227,9 @@ engine_error! {
 /// A trait for engines which perform out-of-place lwe addition.
 pub trait LweScalarAdditionEngine<Input1, Input2, Output, Representation>: AbstractEngine
 where
-    Input1: LweCiphertextEntity<Representation= Representation>,
-    Input2: PlaintextEntity<Representation= Representation>,
-    Output: LweCiphertextEntity<Representation= Representation>,
+    Input1: LweCiphertextEntity<Representation = Representation>,
+    Input2: PlaintextEntity<Representation = Representation>,
+    Output: LweCiphertextEntity<Representation = Representation>,
 {
     fn scalar_add_lwe(
         &mut self,
@@ -253,8 +254,8 @@ engine_error! {
 /// A trait for engines which perform inplace lwe addition.
 pub trait LweInplaceScalarAdditionEngine<Input, Output, Representation>: AbstractEngine
 where
-    Input: PlaintextEntity<Representation= Representation>,
-    Output: LweCiphertextEntity<Representation= Representation>,
+    Input: PlaintextEntity<Representation = Representation>,
+    Output: LweCiphertextEntity<Representation = Representation>,
 {
     fn inplace_scalar_add_lwe(
         &mut self,
@@ -267,5 +268,5 @@ where
 
 // This makes it impossible for types outside concrete to implement operations.
 pub(crate) mod sealed {
-    pub(crate) trait AbstractEngineSeal {}
+    pub trait AbstractEngineSeal {}
 }

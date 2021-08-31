@@ -1,14 +1,15 @@
 use serde::{Deserialize, Serialize};
 
-use crate::crypto::encoding::{Cleartext, CleartextList, Plaintext};
-use crate::crypto::secret::LweSecretKey;
-use crate::math::tensor::{AsMutTensor, AsRefTensor, Tensor};
-use crate::tensor_traits;
+use crate::backends::core::private::crypto::encoding::{Cleartext, CleartextList, Plaintext};
+use crate::backends::core::private::crypto::secret::LweSecretKey;
+use crate::backends::core::private::math::tensor::{
+    tensor_traits, AsMutTensor, AsRefTensor, Tensor,
+};
 
 use super::LweList;
-use crate::crypto::glwe::GlweCiphertext;
-use crate::math::polynomial::MonomialDegree;
-use crate::math::torus::UnsignedTorus;
+use crate::backends::core::private::crypto::glwe::GlweCiphertext;
+use crate::backends::core::private::math::polynomial::MonomialDegree;
+use crate::backends::core::private::math::torus::UnsignedTorus;
 use concrete_commons::key_kinds::KeyKind;
 use concrete_commons::numeric::{Numeric, UnsignedInteger};
 use concrete_commons::parameters::{LweDimension, LweSize};

@@ -1,5 +1,6 @@
-use crate::math::tensor::{AsMutTensor, AsRefTensor, Tensor};
-use crate::{ck_dim_div, tensor_traits};
+use crate::backends::core::private::math::tensor::{
+    ck_dim_div, tensor_traits, AsMutTensor, AsRefTensor, Tensor,
+};
 use concrete_commons::numeric::Numeric;
 use concrete_commons::parameters::CleartextCount;
 

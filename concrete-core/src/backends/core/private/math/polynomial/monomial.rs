@@ -1,7 +1,6 @@
-use crate::math::tensor::{
-    AsMutElement, AsMutTensor, AsRefElement, AsRefSlice, AsRefTensor, Tensor,
+use crate::backends::core::private::math::tensor::{
+    tensor_traits, AsMutElement, AsMutTensor, AsRefElement, AsRefSlice, AsRefTensor, Tensor,
 };
-use crate::tensor_traits;
 
 use super::MonomialDegree;
 

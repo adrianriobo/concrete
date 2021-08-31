@@ -1,15 +1,18 @@
-use crate::backends::core::private::crypto::gsw::GswCiphertext as ImplGswCiphertext;
-use crate::specification::entities::{AbstractEntity, GgswCiphertextEntity, GswCiphertextEntity};
-use crate::specification::entities::markers::{GgswCiphertextKind, GswCiphertextKind, BinaryKeyFlavor};
 use crate::backends::core::implementation::entities::markers::{CpuStandard32, CpuStandard64};
-use concrete_commons::parameters::{GlweDimension, PolynomialSize, DecompositionLevelCount, DecompositionBaseLog, LweDimension};
+use crate::backends::core::private::crypto::gsw::GswCiphertext as ImplGswCiphertext;
+use crate::specification::entities::markers::{
+    BinaryKeyFlavor, GswCiphertextKind,
+};
+use crate::specification::entities::{AbstractEntity, GswCiphertextEntity};
+use concrete_commons::parameters::{
+    DecompositionBaseLog, DecompositionLevelCount, LweDimension, };
 
 pub struct GswCiphertext32(ImplGswCiphertext<Vec<u32>, u32>);
-impl AbstractEntity for GswCiphertext32{
+impl AbstractEntity for GswCiphertext32 {
     type Kind = GswCiphertextKind;
     type Representation = CpuStandard32;
 }
-impl GswCiphertextEntity for GswCiphertext32{
+impl GswCiphertextEntity for GswCiphertext32 {
     type KeyFlavor = BinaryKeyFlavor;
 
     fn lwe_dimension(&self) -> LweDimension {
@@ -25,13 +28,12 @@ impl GswCiphertextEntity for GswCiphertext32{
     }
 }
 
-
 pub struct GswCiphertext64(ImplGswCiphertext<Vec<u64>, u64>);
-impl AbstractEntity for GswCiphertext64{
+impl AbstractEntity for GswCiphertext64 {
     type Kind = GswCiphertextKind;
     type Representation = CpuStandard64;
 }
-impl GswCiphertextEntity for GswCiphertext64{
+impl GswCiphertextEntity for GswCiphertext64 {
     type KeyFlavor = BinaryKeyFlavor;
 
     fn lwe_dimension(&self) -> LweDimension {

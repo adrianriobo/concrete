@@ -1,11 +1,13 @@
-use crate::crypto::encoding::PlaintextList;
-use crate::crypto::glwe::GlweList;
-use crate::crypto::secret::generators::{EncryptionRandomGenerator, SecretRandomGenerator};
-use crate::crypto::secret::GlweSecretKey;
-use crate::math::random::RandomGenerator;
-use crate::math::torus::UnsignedTorus;
-use crate::test_tools;
-use crate::test_tools::assert_delta_std_dev;
+use crate::backends::core::private::crypto::encoding::PlaintextList;
+use crate::backends::core::private::crypto::glwe::GlweList;
+use crate::backends::core::private::crypto::secret::generators::{
+    EncryptionRandomGenerator, SecretRandomGenerator,
+};
+use crate::backends::core::private::crypto::secret::GlweSecretKey;
+use crate::backends::core::private::math::random::RandomGenerator;
+use crate::backends::core::private::math::torus::UnsignedTorus;
+use crate::backends::core::private::test_tools;
+use crate::backends::core::private::test_tools::assert_delta_std_dev;
 use concrete_commons::dispersion::LogStandardDev;
 
 fn test_glwe<T: UnsignedTorus>() {

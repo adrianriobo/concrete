@@ -1,5 +1,7 @@
-use crate::math::random::{Gaussian, RandomGenerable, RandomGenerator, Uniform};
-use crate::math::tensor::AsMutTensor;
+use crate::backends::core::private::math::random::{
+    Gaussian, RandomGenerable, RandomGenerator, Uniform,
+};
+use crate::backends::core::private::math::tensor::AsMutTensor;
 
 use concrete_commons::dispersion::DispersionParameter;
 use concrete_commons::numeric::UnsignedInteger;

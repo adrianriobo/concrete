@@ -1,12 +1,14 @@
-use crate::crypto::encoding::Plaintext;
-use crate::crypto::gsw::GswCiphertext;
-use crate::crypto::lwe::LweCiphertext;
-use crate::crypto::secret::generators::{EncryptionRandomGenerator, SecretRandomGenerator};
-use crate::crypto::secret::LweSecretKey;
-use crate::math::random::RandomGenerator;
-use crate::math::tensor::{AsMutSlice, Tensor};
-use crate::math::torus::UnsignedTorus;
-use crate::test_tools::assert_noise_distribution;
+use crate::backends::core::private::crypto::encoding::Plaintext;
+use crate::backends::core::private::crypto::gsw::GswCiphertext;
+use crate::backends::core::private::crypto::lwe::LweCiphertext;
+use crate::backends::core::private::crypto::secret::generators::{
+    EncryptionRandomGenerator, SecretRandomGenerator,
+};
+use crate::backends::core::private::crypto::secret::LweSecretKey;
+use crate::backends::core::private::math::random::RandomGenerator;
+use crate::backends::core::private::math::tensor::{AsMutSlice, Tensor};
+use crate::backends::core::private::math::torus::UnsignedTorus;
+use crate::backends::core::private::test_tools::assert_noise_distribution;
 use concrete_commons::dispersion::{DispersionParameter, LogStandardDev, Variance};
 use concrete_commons::parameters::{DecompositionBaseLog, DecompositionLevelCount, LweDimension};
 use concrete_npe as npe;

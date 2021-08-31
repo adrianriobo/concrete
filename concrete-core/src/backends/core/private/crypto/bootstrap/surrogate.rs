@@ -1,7 +1,7 @@
-use crate::crypto::bootstrap::FourierBootstrapKey;
-use crate::math::fft::Complex64;
-use crate::math::tensor::Tensor;
-use crate::math::torus::UnsignedTorus;
+use crate::backends::core::private::crypto::bootstrap::FourierBootstrapKey;
+use crate::backends::core::private::math::fft::Complex64;
+use crate::backends::core::private::math::tensor::Tensor;
+use crate::backends::core::private::math::torus::UnsignedTorus;
 use concrete_commons::parameters::{
     DecompositionBaseLog, DecompositionLevelCount, GlweSize, PolynomialSize,
 };

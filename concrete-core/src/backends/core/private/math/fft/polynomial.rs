@@ -1,8 +1,10 @@
 use concrete_fftw::array::AlignedVec;
 use serde::{Deserialize, Serialize};
 
-use crate::math::tensor::{AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, Tensor};
-use crate::{ck_dim_eq, tensor_traits, zip, zip_args};
+use crate::backends::core::private::math::tensor::{
+    ck_dim_eq, tensor_traits, AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, Tensor,
+};
+use crate::backends::core::private::utils::{zip, zip_args};
 
 use super::Complex64;
 use concrete_commons::parameters::PolynomialSize;

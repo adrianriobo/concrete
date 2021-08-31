@@ -7,13 +7,16 @@ use concrete_commons::parameters::{
     CiphertextCount, DecompositionBaseLog, DecompositionLevelCount, LweDimension, LweSize,
 };
 
-use crate::crypto::encoding::{Plaintext, PlaintextList};
-use crate::crypto::secret::generators::EncryptionRandomGenerator;
-use crate::crypto::secret::LweSecretKey;
-use crate::math::decomposition::{DecompositionLevel, DecompositionTerm, SignedDecomposer};
-use crate::math::tensor::{AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, Tensor};
-use crate::math::torus::UnsignedTorus;
-use crate::{ck_dim_div, ck_dim_eq, tensor_traits};
+use crate::backends::core::private::crypto::encoding::{Plaintext, PlaintextList};
+use crate::backends::core::private::crypto::secret::generators::EncryptionRandomGenerator;
+use crate::backends::core::private::crypto::secret::LweSecretKey;
+use crate::backends::core::private::math::decomposition::{
+    DecompositionLevel, DecompositionTerm, SignedDecomposer,
+};
+use crate::backends::core::private::math::tensor::{
+    ck_dim_div, ck_dim_eq, tensor_traits, AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, Tensor,
+};
+use crate::backends::core::private::math::torus::UnsignedTorus;
 
 use super::{LweCiphertext, LweList};
 

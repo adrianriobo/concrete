@@ -12,7 +12,9 @@
 //! traits which allow to go back and forth between an unsigned integer representation and a
 //! floating point representation.
 
-use crate::math::random::{Gaussian, RandomGenerable, Uniform, UniformBinary, UniformTernary};
+use crate::backends::core::private::math::random::{
+    Gaussian, RandomGenerable, Uniform, UniformBinary, UniformTernary,
+};
 use concrete_commons::dispersion::LogStandardDev;
 use concrete_commons::numeric::{CastFrom, CastInto, FloatingPoint, Numeric, UnsignedInteger};
 use std::fmt::{Debug, Display};

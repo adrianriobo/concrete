@@ -5,18 +5,22 @@ use concrete_fftw::array::AlignedVec;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 use super::surrogate::SurrogateBsk;
-use crate::crypto::bootstrap::standard::StandardBootstrapKey;
-use crate::crypto::bootstrap::surrogate::BskKind;
-use crate::crypto::bootstrap::Bootstrap;
-use crate::crypto::ggsw::GgswCiphertext;
-use crate::crypto::glwe::GlweCiphertext;
-use crate::crypto::lwe::LweCiphertext;
-use crate::math::decomposition::SignedDecomposer;
-use crate::math::fft::{Complex64, Fft, FourierPolynomial};
-use crate::math::polynomial::{MonomialDegree, Polynomial, PolynomialList};
-use crate::math::tensor::{AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, IntoTensor, Tensor};
-use crate::math::torus::UnsignedTorus;
-use crate::{ck_dim_div, ck_dim_eq, zip, zip_args};
+use crate::backends::core::private::crypto::bootstrap::standard::StandardBootstrapKey;
+use crate::backends::core::private::crypto::bootstrap::surrogate::BskKind;
+use crate::backends::core::private::crypto::bootstrap::Bootstrap;
+use crate::backends::core::private::crypto::ggsw::GgswCiphertext;
+use crate::backends::core::private::crypto::glwe::GlweCiphertext;
+use crate::backends::core::private::crypto::lwe::LweCiphertext;
+use crate::backends::core::private::math::decomposition::SignedDecomposer;
+use crate::backends::core::private::math::fft::{Complex64, Fft, FourierPolynomial};
+use crate::backends::core::private::math::polynomial::{
+    MonomialDegree, Polynomial, PolynomialList,
+};
+use crate::backends::core::private::math::tensor::{
+    ck_dim_div, ck_dim_eq, AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, IntoTensor, Tensor,
+};
+use crate::backends::core::private::math::torus::UnsignedTorus;
+use crate::backends::core::private::utils::{zip, zip_args};
 use concrete_commons::numeric::{CastInto, Numeric};
 use concrete_commons::parameters::{
     DecompositionBaseLog, DecompositionLevelCount, GlweSize, LweDimension, PolynomialSize,

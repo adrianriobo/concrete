@@ -1,17 +1,21 @@
-use super::super::super::private::crypto::glwe::GlweCiphertext as ImplGlweCiphertext;
-use super::super::super::private::crypto::glwe::GlweList as ImplGlweList;
-use crate::specification::entities::{AbstractEntity, GlweCiphertextEntity, GlweCiphertextVectorEntity};
-use crate::specification::entities::markers::{GlweCiphertextKind, GlweCiphertextVectorKind, BinaryKeyFlavor};
+use super::super::super::private::crypto::glwe::{
+    GlweCiphertext as ImplGlweCiphertext, GlweList as ImplGlweList,
+};
 use crate::backends::core::implementation::entities::markers::{CpuStandard32, CpuStandard64};
-use concrete_commons::parameters::{GlweDimension, PolynomialSize, GlweCiphertextCount};
-
+use crate::specification::entities::markers::{
+    BinaryKeyFlavor, GlweCiphertextKind, GlweCiphertextVectorKind,
+};
+use crate::specification::entities::{
+    AbstractEntity, GlweCiphertextEntity, GlweCiphertextVectorEntity,
+};
+use concrete_commons::parameters::{GlweCiphertextCount, GlweDimension, PolynomialSize};
 
 pub struct GlweCiphextext32(ImplGlweCiphertext<Vec<u32>>);
-impl AbstractEntity for GlweCiphextext32{
+impl AbstractEntity for GlweCiphextext32 {
     type Kind = GlweCiphertextKind;
     type Representation = CpuStandard32;
 }
-impl GlweCiphertextEntity for GlweCiphextext32{
+impl GlweCiphertextEntity for GlweCiphextext32 {
     type KeyFlavor = BinaryKeyFlavor;
 
     fn glwe_dimension(&self) -> GlweDimension {
@@ -24,11 +28,11 @@ impl GlweCiphertextEntity for GlweCiphextext32{
 }
 
 pub struct GlweCiphextext64(ImplGlweCiphertext<Vec<u64>>);
-impl AbstractEntity for GlweCiphextext64{
+impl AbstractEntity for GlweCiphextext64 {
     type Kind = GlweCiphertextKind;
     type Representation = CpuStandard64;
 }
-impl GlweCiphertextEntity for GlweCiphextext64{
+impl GlweCiphertextEntity for GlweCiphextext64 {
     type KeyFlavor = BinaryKeyFlavor;
 
     fn glwe_dimension(&self) -> GlweDimension {
@@ -41,15 +45,15 @@ impl GlweCiphertextEntity for GlweCiphextext64{
 }
 
 pub struct GlweCiphertextVector32(ImplGlweList<Vec<u32>>);
-impl AbstractEntity for GlweCiphertextVector32{
+impl AbstractEntity for GlweCiphertextVector32 {
     type Kind = GlweCiphertextVectorKind;
     type Representation = CpuStandard32;
 }
-impl GlweCiphertextVectorEntity for GlweCiphertextVector32{
+impl GlweCiphertextVectorEntity for GlweCiphertextVector32 {
     type KeyFlavor = BinaryKeyFlavor;
 
     fn glwe_dimension(&self) -> GlweDimension {
-        self.0.size().to_glwe_dimension()
+        self.0.glwe_dimension()
     }
 
     fn polynomial_size(&self) -> PolynomialSize {
@@ -62,15 +66,15 @@ impl GlweCiphertextVectorEntity for GlweCiphertextVector32{
 }
 
 pub struct GlweCiphertextVector64(ImplGlweList<Vec<u64>>);
-impl AbstractEntity for GlweCiphertextVector64{
+impl AbstractEntity for GlweCiphertextVector64 {
     type Kind = GlweCiphertextVectorKind;
     type Representation = CpuStandard64;
 }
-impl GlweCiphertextVectorEntity for GlweCiphertextVector64{
+impl GlweCiphertextVectorEntity for GlweCiphertextVector64 {
     type KeyFlavor = BinaryKeyFlavor;
 
     fn glwe_dimension(&self) -> GlweDimension {
-        self.0.size().to_glwe_dimension()
+        self.0.glwe_dimension()
     }
 
     fn polynomial_size(&self) -> PolynomialSize {

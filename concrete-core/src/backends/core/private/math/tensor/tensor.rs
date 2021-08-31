@@ -8,7 +8,7 @@ use std::slice::SliceIndex;
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
 
-use crate::zip;
+use crate::backends::core::private::utils::zip;
 
 use super::{AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, LoadError, SaveError};
 

@@ -1,13 +1,16 @@
 use serde::{Deserialize, Serialize};
 
-use crate::ck_dim_eq;
-use crate::crypto::encoding::{Plaintext, PlaintextList};
-use crate::crypto::gsw::GswCiphertext;
-use crate::crypto::lwe::{LweCiphertext, LweList};
-use crate::crypto::secret::generators::{EncryptionRandomGenerator, SecretRandomGenerator};
-use crate::math::random::{Gaussian, RandomGenerable};
-use crate::math::tensor::{AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, IntoTensor, Tensor};
-use crate::math::torus::UnsignedTorus;
+use crate::backends::core::private::crypto::encoding::{Plaintext, PlaintextList};
+use crate::backends::core::private::crypto::gsw::GswCiphertext;
+use crate::backends::core::private::crypto::lwe::{LweCiphertext, LweList};
+use crate::backends::core::private::crypto::secret::generators::{
+    EncryptionRandomGenerator, SecretRandomGenerator,
+};
+use crate::backends::core::private::math::random::{Gaussian, RandomGenerable};
+use crate::backends::core::private::math::tensor::{
+    ck_dim_eq, AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, IntoTensor, Tensor,
+};
+use crate::backends::core::private::math::torus::UnsignedTorus;
 use concrete_commons::dispersion::DispersionParameter;
 use concrete_commons::key_kinds::{
     BinaryKeyKind, GaussianKeyKind, KeyKind, TernaryKeyKind, UniformKeyKind,

@@ -22,32 +22,32 @@
 ///     println!("{}{}{}", a, b, c);
 /// }
 /// ```
-#[macro_export]
 macro_rules! zip {
     ($($iterator:expr),*)  => {
-        $crate::zip!(@zip $($iterator),*)
+        $crate::backends::core::private::utils::zip!(@zip $($iterator),*)
     };
     (@zip $first:expr, $($iterator:expr),* ) => {
-        $first.zip($crate::zip!(@zip $($iterator),*))
+        $first.zip($crate::backends::core::private::utils::zip!(@zip $($iterator),*))
     };
     (@zip $first:expr) => {
         $first
     };
 }
+pub(crate) use zip;
 
 /// Companion macro to flatten the iterators made with the [`zip`]
-#[macro_export]
 macro_rules! zip_args {
     ($($iterator:pat),*)  => {
-        $crate::zip_args!(@zip $($iterator),*)
+        $crate::backends::core::private::utils::zip_args!(@zip $($iterator),*)
     };
     (@zip $first:pat, $second:pat) => {
         ($first, $second)
     };
     (@zip $first:pat, $($iterator:pat),*) => {
-        ($first, $crate::zip_args!(@zip $($iterator),*))
+        ($first, $crate::backends::core::private::utils::zip_args!(@zip $($iterator),*))
     };
 }
+pub(crate) use zip_args;
 
 /// A macro which emits a compile time warning
 #[macro_export]

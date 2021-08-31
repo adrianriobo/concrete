@@ -1,8 +1,8 @@
-use crate::math::random::{
+use crate::backends::core::private::math::random::{
     Gaussian, RandomGenerable, Uniform, UniformBinary, UniformLsb, UniformMsb, UniformTernary,
     UniformWithZeros,
 };
-use crate::math::tensor::{AsMutSlice, AsMutTensor, Tensor};
+use crate::backends::core::private::math::tensor::{AsMutSlice, AsMutTensor, Tensor};
 use concrete_commons::numeric::{FloatingPoint, Numeric};
 use concrete_csprng::RandomGenerator as RandomGeneratorImpl;
 #[cfg(feature = "multithread")]

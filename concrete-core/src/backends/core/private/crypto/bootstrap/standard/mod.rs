@@ -1,11 +1,13 @@
-use crate::crypto::encoding::Plaintext;
-use crate::crypto::ggsw::GgswCiphertext;
-use crate::crypto::secret::generators::EncryptionRandomGenerator;
-use crate::crypto::secret::{GlweSecretKey, LweSecretKey};
-use crate::math::polynomial::Polynomial;
-use crate::math::tensor::{AsMutTensor, AsRefSlice, AsRefTensor, Tensor};
-use crate::math::torus::UnsignedTorus;
-use crate::{ck_dim_div, ck_dim_eq, tensor_traits, zip, zip_args};
+use crate::backends::core::private::crypto::encoding::Plaintext;
+use crate::backends::core::private::crypto::ggsw::GgswCiphertext;
+use crate::backends::core::private::crypto::secret::generators::EncryptionRandomGenerator;
+use crate::backends::core::private::crypto::secret::{GlweSecretKey, LweSecretKey};
+use crate::backends::core::private::math::polynomial::Polynomial;
+use crate::backends::core::private::math::tensor::{
+    ck_dim_div, ck_dim_eq, tensor_traits, AsMutTensor, AsRefSlice, AsRefTensor, Tensor,
+};
+use crate::backends::core::private::math::torus::UnsignedTorus;
+use crate::backends::core::private::utils::{zip, zip_args};
 use concrete_commons::dispersion::DispersionParameter;
 use concrete_commons::key_kinds::BinaryKeyKind;
 use concrete_commons::numeric::Numeric;

@@ -1,9 +1,11 @@
 use serde::{Deserialize, Serialize};
 
-use crate::crypto::encoding::{CleartextList, PlaintextList};
-use crate::math::tensor::{AsMutTensor, AsRefSlice, AsRefTensor, Tensor};
-use crate::math::torus::UnsignedTorus;
-use crate::{ck_dim_div, tensor_traits, zip, zip_args};
+use crate::backends::core::private::crypto::encoding::{CleartextList, PlaintextList};
+use crate::backends::core::private::math::tensor::{
+    ck_dim_div, tensor_traits, AsMutTensor, AsRefSlice, AsRefTensor, Tensor,
+};
+use crate::backends::core::private::math::torus::UnsignedTorus;
+use crate::backends::core::private::utils::{zip, zip_args};
 
 use super::LweCiphertext;
 use concrete_commons::parameters::{CiphertextCount, CleartextCount, LweDimension, LweSize};

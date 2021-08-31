@@ -2,7 +2,11 @@
 //!
 //! A type representing a given fhe entity used in the concrete scheme _must_ implement one of the
 //! traits contained in this module.
-use concrete_commons::parameters::{CleartextCount, DecompositionBaseLog, DecompositionLevelCount, GlweDimension, LweDimension, PlaintextCount, PolynomialSize, LweCiphertextCount, GlweCiphertextCount, GswCiphertextCount, GgswCiphertextCount};
+use concrete_commons::parameters::{
+    CleartextCount, DecompositionBaseLog, DecompositionLevelCount, GgswCiphertextCount,
+    GlweCiphertextCount, GlweDimension, GswCiphertextCount, LweCiphertextCount, LweDimension,
+    PlaintextCount, PolynomialSize,
+};
 
 /// A module containing various marker traits used for entities.
 pub mod markers;
@@ -145,7 +149,7 @@ pub trait GgswCiphertextEntity: AbstractEntity<Kind = GgswCiphertextKind> {
     type KeyFlavor: KeyFlavorMarker;
 
     /// Returns the glwe dimension of the ciphertext.
-    fn glwe_dimension(&self) -> GlweDimensioncould;
+    fn glwe_dimension(&self) -> GlweDimension;
 
     /// Returns the polynomial size of the ciphertext.
     fn polynomial_size(&self) -> PolynomialSize;

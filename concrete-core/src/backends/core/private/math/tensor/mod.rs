@@ -71,13 +71,12 @@
 
 // This macro implements various traits for a tensor-based object. To work properly, the object in
 // question must be a structure with a `tensor` field.
-#[doc(hidden)]
-#[macro_export]
 macro_rules! tensor_traits {
     ($Type:ident) => {
-        impl<Element, Cont> $crate::math::tensor::AsRefTensor for $Type<Cont>
+        impl<Element, Cont> $crate::backends::core::private::math::tensor::AsRefTensor
+            for $Type<Cont>
         where
-            Cont: $crate::math::tensor::AsRefSlice<Element = Element>,
+            Cont: $crate::backends::core::private::math::tensor::AsRefSlice<Element = Element>,
         {
             type Element = Element;
             type Container = Cont;
@@ -86,24 +85,28 @@ macro_rules! tensor_traits {
             }
         }
 
-        impl<Element, Cont> $crate::math::tensor::AsMutTensor for $Type<Cont>
+        impl<Element, Cont> $crate::backends::core::private::math::tensor::AsMutTensor
+            for $Type<Cont>
         where
-            Cont: $crate::math::tensor::AsMutSlice<Element = Element>,
+            Cont: $crate::backends::core::private::math::tensor::AsMutSlice<Element = Element>,
         {
             type Element = Element;
             type Container = Cont;
             fn as_mut_tensor(
                 &mut self,
-            ) -> &mut Tensor<<Self as $crate::math::tensor::AsMutTensor>::Container> {
+            ) -> &mut Tensor<
+                <Self as $crate::backends::core::private::math::tensor::AsMutTensor>::Container,
+            > {
                 &mut self.tensor
             }
         }
 
-        impl<Cont> $crate::math::tensor::IntoTensor for $Type<Cont>
+        impl<Cont> $crate::backends::core::private::math::tensor::IntoTensor for $Type<Cont>
         where
-            Cont: $crate::math::tensor::AsRefSlice,
+            Cont: $crate::backends::core::private::math::tensor::AsRefSlice,
         {
-            type Element = <Cont as $crate::math::tensor::AsRefSlice>::Element;
+            type Element =
+                <Cont as $crate::backends::core::private::math::tensor::AsRefSlice>::Element;
             type Container = Cont;
             fn into_tensor(self) -> Tensor<Self::Container> {
                 self.tensor
@@ -111,9 +114,8 @@ macro_rules! tensor_traits {
         }
     };
 }
+pub(crate) use tensor_traits;
 
-#[doc(hidden)]
-#[macro_export]
 macro_rules! current_func_path {
     () => {{
         fn name<T>(_any: T) -> &'static str {
@@ -124,12 +126,11 @@ macro_rules! current_func_path {
         &output[..output.len() - 3]
     }};
 }
+pub(crate) use current_func_path;
 
-#[doc(hidden)]
-#[macro_export]
 macro_rules! ck_dim_eq {
     ($tensor_size: expr => $($size: expr),* ) => {
-        let func = $crate::current_func_path!();
+        let func = $crate::backends::core::private::math::tensor::current_func_path!();
         $(
 
             debug_assert!(
@@ -145,13 +146,12 @@ macro_rules! ck_dim_eq {
         )*
     };
 }
+pub(crate) use ck_dim_eq;
 
-#[doc(hidden)]
-#[macro_export]
 macro_rules! ck_dim_div {
     ($tensor_size: expr => $($size: expr),* ) => {
         $(
-            let func = $crate::current_func_path!();
+            let func = $crate::backends::core::private::math::tensor::current_func_path!();
             debug_assert!(
                 $tensor_size % $size == 0,
                 "Called operation {} on tensors of incompatible size. {} (={:?}) does not divide \
@@ -165,6 +165,7 @@ macro_rules! ck_dim_div {
         )*
     };
 }
+pub(crate) use ck_dim_div;
 
 #[cfg(test)]
 mod tests;

@@ -1,6 +1,7 @@
-use crate::math::polynomial::Polynomial;
-use crate::math::tensor::{AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, Tensor};
-use crate::{ck_dim_div, tensor_traits};
+use crate::backends::core::private::math::polynomial::Polynomial;
+use crate::backends::core::private::math::tensor::{
+    ck_dim_div, tensor_traits, AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, Tensor,
+};
 use concrete_commons::numeric::Numeric;
 use concrete_commons::parameters::PlaintextCount;
 

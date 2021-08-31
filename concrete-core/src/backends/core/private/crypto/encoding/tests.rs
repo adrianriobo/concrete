@@ -1,6 +1,8 @@
-use crate::crypto::encoding::{Cleartext, Encoder, Plaintext, RealEncoder};
-use crate::math::torus::UnsignedTorus;
-use crate::test_tools::{any_uint, random_uint_between};
+use crate::backends::core::private::crypto::encoding::{
+    Cleartext, Encoder, Plaintext, RealEncoder,
+};
+use crate::backends::core::private::math::torus::UnsignedTorus;
+use crate::backends::core::private::test_tools::{any_uint, random_uint_between};
 
 fn test_encoding_decoding<T: UnsignedTorus>() {
     //! Encodes and decodes random messages

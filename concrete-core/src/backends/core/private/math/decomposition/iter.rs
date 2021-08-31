@@ -1,6 +1,8 @@
-use crate::math::decomposition::{DecompositionLevel, DecompositionTerm, DecompositionTermTensor};
-use crate::math::tensor::Tensor;
-use crate::{zip, zip_args};
+use crate::backends::core::private::math::decomposition::{
+    DecompositionLevel, DecompositionTerm, DecompositionTermTensor,
+};
+use crate::backends::core::private::math::tensor::Tensor;
+use crate::backends::core::private::utils::{zip, zip_args};
 use concrete_commons::numeric::{SignedInteger, UnsignedInteger};
 use concrete_commons::parameters::{DecompositionBaseLog, DecompositionLevelCount};
 

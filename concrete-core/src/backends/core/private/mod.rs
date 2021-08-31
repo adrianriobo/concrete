@@ -1,3 +1,5 @@
+#![allow(dead_code)] // For the time being
+
 #[allow(unused_macros)]
 macro_rules! assert_delta {
     ($A:expr, $B:expr, $d:expr) => {
@@ -43,9 +45,9 @@ pub mod utils;
 pub mod test_tools {
     use rand::Rng;
 
-    use crate::math::random::{RandomGenerable, RandomGenerator, Uniform};
-    use crate::math::tensor::{AsRefSlice, AsRefTensor};
-    use crate::math::torus::UnsignedTorus;
+    use crate::backends::core::private::math::random::{RandomGenerable, RandomGenerator, Uniform};
+    use crate::backends::core::private::math::tensor::{AsRefSlice, AsRefTensor};
+    use crate::backends::core::private::math::torus::UnsignedTorus;
     use concrete_commons::dispersion::DispersionParameter;
     use concrete_commons::numeric::UnsignedInteger;
     use concrete_commons::parameters::{
@@ -100,7 +102,7 @@ pub mod test_tools {
         Second: AsRefTensor<Element = Element>,
         Element: UnsignedTorus,
     {
-        use crate::math::tensor::Tensor;
+        use crate::backends::core::private::math::tensor::Tensor;
 
         let std_dev = dist.get_standard_dev();
         let confidence = 0.95;

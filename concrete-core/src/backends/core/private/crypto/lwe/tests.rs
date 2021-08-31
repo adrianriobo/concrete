@@ -1,13 +1,17 @@
 use concrete_npe as npe;
 
-use crate::crypto::encoding::{Cleartext, CleartextList, Plaintext, PlaintextList};
-use crate::crypto::lwe::{LweCiphertext, LweKeyswitchKey, LweList};
-use crate::crypto::secret::generators::{EncryptionRandomGenerator, SecretRandomGenerator};
-use crate::crypto::secret::LweSecretKey;
-use crate::math::random::{RandomGenerable, RandomGenerator, UniformMsb};
-use crate::math::tensor::{AsMutTensor, AsRefTensor, Tensor};
-use crate::math::torus::UnsignedTorus;
-use crate::test_tools::{
+use crate::backends::core::private::crypto::encoding::{
+    Cleartext, CleartextList, Plaintext, PlaintextList,
+};
+use crate::backends::core::private::crypto::lwe::{LweCiphertext, LweKeyswitchKey, LweList};
+use crate::backends::core::private::crypto::secret::generators::{
+    EncryptionRandomGenerator, SecretRandomGenerator,
+};
+use crate::backends::core::private::crypto::secret::LweSecretKey;
+use crate::backends::core::private::math::random::{RandomGenerable, RandomGenerator, UniformMsb};
+use crate::backends::core::private::math::tensor::{AsMutTensor, AsRefTensor, Tensor};
+use crate::backends::core::private::math::torus::UnsignedTorus;
+use crate::backends::core::private::test_tools::{
     assert_delta_std_dev, assert_noise_distribution, random_ciphertext_count, random_lwe_dimension,
     random_uint_between,
 };
