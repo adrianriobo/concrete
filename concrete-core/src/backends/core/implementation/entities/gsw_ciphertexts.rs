@@ -1,11 +1,8 @@
 use crate::backends::core::implementation::entities::markers::{CpuStandard32, CpuStandard64};
 use crate::backends::core::private::crypto::gsw::GswCiphertext as ImplGswCiphertext;
-use crate::specification::entities::markers::{
-    BinaryKeyFlavor, GswCiphertextKind,
-};
+use crate::specification::entities::markers::{BinaryKeyFlavor, GswCiphertextKind};
 use crate::specification::entities::{AbstractEntity, GswCiphertextEntity};
-use concrete_commons::parameters::{
-    DecompositionBaseLog, DecompositionLevelCount, LweDimension, };
+use concrete_commons::parameters::{DecompositionBaseLog, DecompositionLevelCount, LweDimension};
 
 pub struct GswCiphertext32(ImplGswCiphertext<Vec<u32>, u32>);
 impl AbstractEntity for GswCiphertext32 {

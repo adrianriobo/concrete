@@ -1,3 +1,5 @@
+//! A module containing a specification of the concrete fhe scheme.
+//!
 //! The `concrete-core` backends provides give access to two different families of objects:
 //!
 //! + __Entities__ which are fhe objects you can manipulate with the library.

@@ -11,7 +11,7 @@ use crate::specification::entities::{
 use concrete_commons::parameters::{LweCiphertextCount, LweDimension};
 
 /// An lwe ciphertext in the cpu memory, in the standard domain, using 32-bits precision integers.
-pub struct LweCiphertext32(ImplLweCiphertext<Vec<u32>>);
+pub struct LweCiphertext32(pub(crate) ImplLweCiphertext<Vec<u32>>);
 impl AbstractEntity for LweCiphertext32 {
     type Kind = LweCiphertextKind;
     type Representation = CpuStandard32;
@@ -25,7 +25,7 @@ impl LweCiphertextEntity for LweCiphertext32 {
 }
 
 /// An lwe ciphertext in the cpu memory, in the standard domain, using 64-bits precision integers.
-pub struct LweCiphertext64(ImplLweCiphertext<Vec<u64>>);
+pub struct LweCiphertext64(pub(crate) ImplLweCiphertext<Vec<u64>>);
 impl AbstractEntity for LweCiphertext64 {
     type Kind = LweCiphertextKind;
     type Representation = CpuStandard64;
@@ -40,7 +40,7 @@ impl LweCiphertextEntity for LweCiphertext64 {
 
 /// A vector of lwe ciphertexts in the cpu memory, in the standard domain, using 32-bits precision
 /// integers.
-pub struct LweCiphertextVector32(ImplLweList<Vec<u32>>);
+pub struct LweCiphertextVector32(pub(crate) ImplLweList<Vec<u32>>);
 impl AbstractEntity for LweCiphertextVector32 {
     type Kind = LweCiphertextVectorKind;
     type Representation = CpuStandard32;
@@ -59,7 +59,7 @@ impl LweCiphertextVectorEntity for LweCiphertextVector32 {
 
 /// A vector of lwe ciphertexts in the cpu memory, in the standard domain, using 64-bits precision
 /// integers.
-pub struct LweCiphertextVector64(ImplLweList<Vec<u64>>);
+pub struct LweCiphertextVector64(pub(crate) ImplLweList<Vec<u64>>);
 impl AbstractEntity for LweCiphertextVector64 {
     type Kind = LweCiphertextVectorKind;
     type Representation = CpuStandard64;

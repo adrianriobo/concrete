@@ -15,14 +15,13 @@
 //!
 //! # Architecture
 //!
-//! `concrete-core` is meant to be modular. The `specification` module contains a specification
-//! (in the form of traits) of the concrete fhe scheme. It describes the fhe objects and operators,
-//! which are exposed by the library. The `backends` module contains various backends implementing
-//! all or a part of this scheme. These different backends can be activated by feature flags, each
-//! making use of different hardware or system libraries to make operations faster.
+//! `concrete-core` is meant to be modular.
+//!
+//! + The [`specification`] module contains a specification (in the form of traits) of the concrete
+//! fhe scheme. It describes the fhe objects and operators, which are exposed by the library.
+//! + The [`backends`] module contains various backends implementing all or a part of this scheme.
+//! These different backends can be activated by feature flags, each making use of different
+//! hardware or system libraries to make operations faster.
 
-/// A module containing a specification of the concrete fhe scheme.
-pub mod specification;
-
-// /// A module containing various backends implementing the concrete fhe scheme.
 pub mod backends;
+pub mod specification;

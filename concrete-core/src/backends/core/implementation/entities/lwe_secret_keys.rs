@@ -5,7 +5,7 @@ use crate::specification::entities::{AbstractEntity, LweSecretKeyEntity};
 use concrete_commons::key_kinds::BinaryKeyKind;
 use concrete_commons::parameters::LweDimension;
 
-pub struct LweSecretKey32(ImpLweSecretKey<BinaryKeyKind, Vec<u32>>);
+pub struct LweSecretKey32(pub(crate) ImpLweSecretKey<BinaryKeyKind, Vec<u32>>);
 impl AbstractEntity for LweSecretKey32 {
     type Kind = LweSecretKeyKind;
     type Representation = CpuStandard32;
@@ -18,7 +18,7 @@ impl LweSecretKeyEntity for LweSecretKey32 {
     }
 }
 
-pub struct LweSecretKey64(ImpLweSecretKey<BinaryKeyKind, Vec<u64>>);
+pub struct LweSecretKey64(pub(crate) ImpLweSecretKey<BinaryKeyKind, Vec<u64>>);
 impl AbstractEntity for LweSecretKey64 {
     type Kind = LweSecretKeyKind;
     type Representation = CpuStandard64;

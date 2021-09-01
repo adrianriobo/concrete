@@ -17,8 +17,10 @@
 // instance of this object will live during the program execution, for example when working in a
 // multithreaded environment.
 use crate::specification::entities::{
-    AbstractEntity, LweCiphertextEntity, LweSecretKeyEntity, PlaintextEntity,
+    AbstractEntity, LweCiphertextEntity, LweCiphertextVectorEntity, LweSecretKeyEntity,
+    PlaintextEntity, PlaintextVectorEntity,
 };
+use concrete_commons::dispersion::{DispersionParameter, Variance};
 use concrete_commons::parameters::LweSize;
 
 /// This trait is the top-level abstraction for engines.
@@ -36,6 +38,9 @@ pub trait AbstractEngine: sealed::AbstractEngineSeal {
 
     /// The error associated to the engine.
     type EngineError: std::error::Error;
+
+    /// A constructor for the engine.
+    fn new() -> Result<Self, Self::EngineError>;
 }
 
 macro_rules! engine_error{
@@ -70,9 +75,9 @@ engine_error! {
 }
 
 /// A trait for engines performing allocations of lwe ciphertexts.
-pub trait LweAllocationEngine<Output, Representation>: AbstractEngine
+pub trait LweAllocationEngine<Output>: AbstractEngine
 where
-    Output: LweCiphertextEntity<Representation = Representation>,
+    Output: LweCiphertextEntity,
 {
     /// A safe entry point for allocating lwe ciphertexts.
     fn allocate_lwe(
@@ -87,6 +92,24 @@ where
     /// See the documentation of the implementation for the engine you intend to use for details on
     /// the safety of this function.
     unsafe fn allocate_lwe_unchecked(&mut self, lwe_size: LweSize) -> Output;
+}
+
+engine_error! {
+    "The error used in the `LweSecretKeyAllocationEngine` trait.",
+    LweSecretKeyAllocationError @
+    MemoryExhausted => "Not enough memory left to allocate the entity."
+}
+
+pub trait LweSecretKeyGenerationEngine<Output>: AbstractEngine
+where
+    Output: LweSecretKeyEntity,
+{
+    fn generate_lwe_secret_key(
+        &mut self,
+        lwe_size: LweSize,
+    ) -> Result<Output, LweAllocationError<Self::EngineError>>;
+
+    unsafe fn generate_lwe_secret_key_unchecked(&mut self, lwe_size: LweSize) -> Output;
 }
 
 engine_error! {
@@ -118,20 +141,59 @@ engine_error! {
 }
 
 /// A trait for engines which encrypt lwe ciphertexts.
-pub trait LweEncryptionEngine<Key, Input, Output, Flavor, Representation>: AbstractEngine
+pub trait LweEncryptionEngine<Key, Input, Output>: AbstractEngine
 where
-    Key: LweSecretKeyEntity<Representation = Representation, KeyFlavor = Flavor>,
-    Input: PlaintextEntity<Representation = Representation>,
-    Output: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
+    Key: LweSecretKeyEntity,
+    Input: PlaintextEntity<Representation = Key::Representation>,
+    Output: LweCiphertextEntity<Representation = Key::Representation, KeyFlavor = Key::KeyFlavor>,
 {
     fn encrypt_lwe(
         &mut self,
         key: &Key,
         output: &mut Output,
         input: &Input,
+        noise: Variance,
     ) -> Result<(), LweEncryptionError<Self::EngineError>>;
 
-    unsafe fn encrypt_lwe_unchecked(&mut self, key: &Key, output: &mut Output, input: &Input);
+    unsafe fn encrypt_lwe_unchecked(
+        &mut self,
+        key: &Key,
+        output: &mut Output,
+        input: &Input,
+        noise: Variance,
+    );
+}
+
+engine_error! {
+    "The error used in the `LweVectorEncryptionEngine` trait.",
+    LweVectorEncryptionError @
+    LweDimensionMismatch => "Lwe dimensions of the key is incompatible with the output ciphertext."
+    CountMismatch => "Number of plaintext different from number of ciphertext."
+}
+
+/// A trait for engines which encrypt lwe ciphertexts.
+pub trait LweVectorEncryptionEngine<Key, Input, Output>: AbstractEngine
+where
+    Key: LweSecretKeyEntity,
+    Input: PlaintextVectorEntity<Representation = Key::Representation>,
+    Output:
+        LweCiphertextVectorEntity<Representation = Key::Representation, KeyFlavor = Key::KeyFlavor>,
+{
+    fn encrypt_lwe_vector(
+        &mut self,
+        key: &Key,
+        output: &mut Output,
+        input: &Input,
+        noise: Variance,
+    ) -> Result<(), LweEncryptionError<Self::EngineError>>;
+
+    unsafe fn encrypt_lwe_vector_unchecked(
+        &mut self,
+        key: &Key,
+        output: &mut Output,
+        input: &Input,
+        noise: Variance,
+    );
 }
 
 engine_error! {
@@ -141,21 +203,23 @@ engine_error! {
 }
 
 /// A trait for engines which perform out-of-place lwe addition.
-pub trait LweAdditionEngine<Input1, Input2, Output, Representation, Flavor>:
-    AbstractEngine
+pub trait LweAdditionEngine<Ciphertext>: AbstractEngine
 where
-    Input1: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
-    Input2: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
-    Output: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
+    Ciphertext: LweCiphertextEntity,
 {
     fn add_lwe(
         &mut self,
-        output: &mut Output,
-        input_1: &Input1,
-        input_2: &Input2,
+        output: &mut Ciphertext,
+        input_1: &Ciphertext,
+        input_2: &Ciphertext,
     ) -> Result<(), LweAdditionError<Self::EngineError>>;
 
-    unsafe fn add_lwe_unchecked(&mut self, output: &mut Output, input_1: &Input1, input_2: &Input2);
+    unsafe fn add_lwe_unchecked(
+        &mut self,
+        output: &mut Ciphertext,
+        input_1: &Ciphertext,
+        input_2: &Ciphertext,
+    );
 }
 
 engine_error! {
@@ -165,18 +229,17 @@ engine_error! {
 }
 
 /// A trait for engines which perform inplace lwe addition.
-pub trait LweInplaceAdditionEngine<Input, Output, Representation, Flavor>: AbstractEngine
+pub trait LweInplaceAdditionEngine<Ciphertext>: AbstractEngine
 where
-    Input: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
-    Output: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
+    Ciphertext: LweCiphertextEntity,
 {
     fn inplace_add_lwe(
         &mut self,
-        output: &mut Output,
-        input: &Input,
+        output: &mut Ciphertext,
+        input: &Ciphertext,
     ) -> Result<(), LweInplaceAdditionError<Self::EngineError>>;
 
-    unsafe fn inplace_add_lwe_unchecked(&mut self, output: &mut Output, input: &Input);
+    unsafe fn inplace_add_lwe_unchecked(&mut self, output: &mut Ciphertext, input: &Ciphertext);
 }
 
 engine_error! {
