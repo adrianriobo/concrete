@@ -1,11 +1,9 @@
-use crate::backends::core::implementation::entities::LweCiphertext32;
 use crate::backends::core::private::crypto::secret::generators::{
     EncryptionRandomGenerator as ImplEncryptionRandomGenerator,
     SecretRandomGenerator as ImplSecretRandomGenerator,
 };
 use crate::specification::engines::sealed::AbstractEngineSeal;
-use crate::specification::engines::{AbstractEngine, LweAllocationEngine, LweAllocationError};
-use concrete_commons::parameters::LweSize;
+use crate::specification::engines::AbstractEngine;
 use std::error::Error;
 use std::fmt::{Display, Formatter};
 
@@ -43,7 +41,14 @@ impl AbstractEngine for CoreEngine {
 }
 
 mod conversion;
+mod glwe_allocation;
+mod glwe_encryption;
+mod glwe_secret_key_generation;
 mod lwe_addition;
 mod lwe_allocation;
+mod lwe_cleartext_multiplication;
 mod lwe_encryption;
+mod lwe_keyswitch_key_generation;
+mod lwe_multisum;
+mod lwe_negation;
 mod lwe_secret_key_generation;

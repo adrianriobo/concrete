@@ -5,7 +5,7 @@ use crate::specification::entities::{AbstractEntity, GlweSecretKeyEntity};
 use concrete_commons::key_kinds::BinaryKeyKind;
 use concrete_commons::parameters::{GlweDimension, PolynomialSize};
 
-pub struct GlweSecretKey32(ImpGlweSecretKey<BinaryKeyKind, Vec<u32>>);
+pub struct GlweSecretKey32(pub(crate) ImpGlweSecretKey<BinaryKeyKind, Vec<u32>>);
 impl AbstractEntity for GlweSecretKey32 {
     type Kind = GlweSecretKeyKind;
     type Representation = CpuStandard32;
@@ -22,7 +22,7 @@ impl GlweSecretKeyEntity for GlweSecretKey32 {
     }
 }
 
-pub struct GlweSecretKey64(ImpGlweSecretKey<BinaryKeyKind, Vec<u64>>);
+pub struct GlweSecretKey64(pub(crate) ImpGlweSecretKey<BinaryKeyKind, Vec<u64>>);
 impl AbstractEntity for GlweSecretKey64 {
     type Kind = GlweSecretKeyKind;
     type Representation = CpuStandard64;

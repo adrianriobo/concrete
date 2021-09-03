@@ -10,7 +10,7 @@ use crate::specification::entities::{
 };
 use concrete_commons::parameters::{GlweCiphertextCount, GlweDimension, PolynomialSize};
 
-pub struct GlweCiphextext32(ImplGlweCiphertext<Vec<u32>>);
+pub struct GlweCiphextext32(pub(crate) ImplGlweCiphertext<Vec<u32>>);
 impl AbstractEntity for GlweCiphextext32 {
     type Kind = GlweCiphertextKind;
     type Representation = CpuStandard32;
@@ -27,7 +27,7 @@ impl GlweCiphertextEntity for GlweCiphextext32 {
     }
 }
 
-pub struct GlweCiphextext64(ImplGlweCiphertext<Vec<u64>>);
+pub struct GlweCiphextext64(pub(crate) ImplGlweCiphertext<Vec<u64>>);
 impl AbstractEntity for GlweCiphextext64 {
     type Kind = GlweCiphertextKind;
     type Representation = CpuStandard64;
@@ -44,7 +44,7 @@ impl GlweCiphertextEntity for GlweCiphextext64 {
     }
 }
 
-pub struct GlweCiphertextVector32(ImplGlweList<Vec<u32>>);
+pub struct GlweCiphertextVector32(pub(crate) ImplGlweList<Vec<u32>>);
 impl AbstractEntity for GlweCiphertextVector32 {
     type Kind = GlweCiphertextVectorKind;
     type Representation = CpuStandard32;
@@ -65,7 +65,7 @@ impl GlweCiphertextVectorEntity for GlweCiphertextVector32 {
     }
 }
 
-pub struct GlweCiphertextVector64(ImplGlweList<Vec<u64>>);
+pub struct GlweCiphertextVector64(pub(crate) ImplGlweList<Vec<u64>>);
 impl AbstractEntity for GlweCiphertextVector64 {
     type Kind = GlweCiphertextVectorKind;
     type Representation = CpuStandard64;

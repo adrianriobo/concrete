@@ -16,18 +16,17 @@
 // entry point for every operations made possible by a backend. This does not mean that a single
 // instance of this object will live during the program execution, for example when working in a
 // multithreaded environment.
-use crate::specification::entities::{
-    AbstractEntity, LweCiphertextEntity, LweCiphertextVectorEntity, LweSecretKeyEntity,
-    PlaintextEntity, PlaintextVectorEntity,
-};
-use concrete_commons::dispersion::{DispersionParameter, Variance};
-use concrete_commons::parameters::LweSize;
+
+// This makes it impossible for types outside concrete to implement operations.
+pub(crate) mod sealed {
+    pub trait AbstractEngineSeal {}
+}
 
 /// This trait is the top-level abstraction for engines.
 ///
 /// An `AbstractEngine` is nothing more than a type with an associated error type. This error type
 /// encodes the failure cases _specific_ to the engine.
-pub trait AbstractEngine: sealed::AbstractEngineSeal {
+pub trait AbstractEngine: sealed::AbstractEngineSeal + Sized {
     // # Why putting the error type in an abstract super trait ?
     //
     // This error is supposed to be reduced to only engine related errors, and not ones related to
@@ -67,269 +66,61 @@ macro_rules! engine_error{
         impl<EngineError: std::error::Error> std::error::Error for $name<EngineError>{}
     }
 }
+pub(crate) use engine_error;
 
-engine_error! {
-    "The error used in the `LweAllocationEngine` trait.",
-    LweAllocationError @
-    MemoryExhausted => "Not enough memory left to allocate the entity."
-}
+mod conversion;
+pub use conversion::*;
 
-/// A trait for engines performing allocations of lwe ciphertexts.
-pub trait LweAllocationEngine<Output>: AbstractEngine
-where
-    Output: LweCiphertextEntity,
-{
-    /// A safe entry point for allocating lwe ciphertexts.
-    fn allocate_lwe(
-        &mut self,
-        lwe_size: LweSize,
-    ) -> Result<Output, LweAllocationError<Self::EngineError>>;
+mod lwe_allocation;
+pub use lwe_allocation::*;
 
-    /// An unsafe entry point for allocating lwe ciphertexts.
-    ///
-    /// # Safey
-    ///
-    /// See the documentation of the implementation for the engine you intend to use for details on
-    /// the safety of this function.
-    unsafe fn allocate_lwe_unchecked(&mut self, lwe_size: LweSize) -> Output;
-}
+mod glwe_allocation;
+pub use glwe_allocation::*;
 
-engine_error! {
-    "The error used in the `LweSecretKeyAllocationEngine` trait.",
-    LweSecretKeyAllocationError @
-    MemoryExhausted => "Not enough memory left to allocate the entity."
-}
+mod lwe_secret_key_generation;
+pub use lwe_secret_key_generation::*;
 
-pub trait LweSecretKeyGenerationEngine<Output>: AbstractEngine
-where
-    Output: LweSecretKeyEntity,
-{
-    fn generate_lwe_secret_key(
-        &mut self,
-        lwe_size: LweSize,
-    ) -> Result<Output, LweAllocationError<Self::EngineError>>;
+mod glwe_secret_key_generation;
+pub use glwe_secret_key_generation::*;
 
-    unsafe fn generate_lwe_secret_key_unchecked(&mut self, lwe_size: LweSize) -> Output;
-}
+mod glwe_encryption;
+pub use glwe_encryption::*;
 
-engine_error! {
-    "The error used in the `ConversionEngine` trait.",
-    ConversionError @
-    SizeMismatch => "The two entities have incompatible sizes."
-}
+mod glwe_vector_encryption;
+pub use glwe_vector_encryption::*;
 
-/// A trait for engines which change the representation of an fhe object.
-pub trait ConversionEngine<Kind, Input, Output, InputRepresentation, OutputRepresentation>:
-    AbstractEngine
-where
-    Input: AbstractEntity<Kind = Kind, Representation = InputRepresentation>,
-    Output: AbstractEntity<Kind = Kind, Representation = OutputRepresentation>,
-{
-    fn convert(
-        &mut self,
-        output: &mut Output,
-        input: &Input,
-    ) -> Result<(), ConversionError<Self::EngineError>>;
+mod lwe_encryption;
+pub use lwe_encryption::*;
 
-    unsafe fn convert_unchecked(&mut self, output: &mut Output, input: &Input);
-}
+mod lwe_vector_encryption;
+pub use lwe_vector_encryption::*;
 
-engine_error! {
-    "The error used in the `LweEncryptionEngine` trait.",
-    LweEncryptionError @
-    LweDimensionMismatch => "Lwe dimensions of the key is incompatible with the output ciphertext."
-}
+mod lwe_add;
+pub use lwe_add::*;
 
-/// A trait for engines which encrypt lwe ciphertexts.
-pub trait LweEncryptionEngine<Key, Input, Output>: AbstractEngine
-where
-    Key: LweSecretKeyEntity,
-    Input: PlaintextEntity<Representation = Key::Representation>,
-    Output: LweCiphertextEntity<Representation = Key::Representation, KeyFlavor = Key::KeyFlavor>,
-{
-    fn encrypt_lwe(
-        &mut self,
-        key: &Key,
-        output: &mut Output,
-        input: &Input,
-        noise: Variance,
-    ) -> Result<(), LweEncryptionError<Self::EngineError>>;
+mod lwe_add_assign;
+pub use lwe_add_assign::*;
 
-    unsafe fn encrypt_lwe_unchecked(
-        &mut self,
-        key: &Key,
-        output: &mut Output,
-        input: &Input,
-        noise: Variance,
-    );
-}
+mod lwe_negation;
+pub use lwe_negation::*;
 
-engine_error! {
-    "The error used in the `LweVectorEncryptionEngine` trait.",
-    LweVectorEncryptionError @
-    LweDimensionMismatch => "Lwe dimensions of the key is incompatible with the output ciphertext."
-    CountMismatch => "Number of plaintext different from number of ciphertext."
-}
+mod lwe_negation_inplace;
+pub use lwe_negation_inplace::*;
 
-/// A trait for engines which encrypt lwe ciphertexts.
-pub trait LweVectorEncryptionEngine<Key, Input, Output>: AbstractEngine
-where
-    Key: LweSecretKeyEntity,
-    Input: PlaintextVectorEntity<Representation = Key::Representation>,
-    Output:
-        LweCiphertextVectorEntity<Representation = Key::Representation, KeyFlavor = Key::KeyFlavor>,
-{
-    fn encrypt_lwe_vector(
-        &mut self,
-        key: &Key,
-        output: &mut Output,
-        input: &Input,
-        noise: Variance,
-    ) -> Result<(), LweEncryptionError<Self::EngineError>>;
+mod lwe_plaintext_addition;
+pub use lwe_plaintext_addition::*;
 
-    unsafe fn encrypt_lwe_vector_unchecked(
-        &mut self,
-        key: &Key,
-        output: &mut Output,
-        input: &Input,
-        noise: Variance,
-    );
-}
+mod lwe_plaintext_addition_inplace;
+pub use lwe_plaintext_addition_inplace::*;
 
-engine_error! {
-    "The error used in the `LweAdditionEngine` trait.",
-    LweAdditionError @
-    LweDimensionMismatch => "Input and output ciphertexts have incompatible lwe dimension."
-}
+mod lwe_cleartext_multiplication;
+pub use lwe_cleartext_multiplication::*;
 
-/// A trait for engines which perform out-of-place lwe addition.
-pub trait LweAdditionEngine<Ciphertext>: AbstractEngine
-where
-    Ciphertext: LweCiphertextEntity,
-{
-    fn add_lwe(
-        &mut self,
-        output: &mut Ciphertext,
-        input_1: &Ciphertext,
-        input_2: &Ciphertext,
-    ) -> Result<(), LweAdditionError<Self::EngineError>>;
+mod lwe_cleartext_multiplication_inplace;
+pub use lwe_cleartext_multiplication_inplace::*;
 
-    unsafe fn add_lwe_unchecked(
-        &mut self,
-        output: &mut Ciphertext,
-        input_1: &Ciphertext,
-        input_2: &Ciphertext,
-    );
-}
+mod lwe_multisum;
+pub use lwe_multisum::*;
 
-engine_error! {
-    "The error used in the `LweInplaceAdditionEngine` trait.",
-    LweInplaceAdditionError @
-    LweDimensionMismatch => "Input and output ciphertexts have incompatible lwe dimension."
-}
-
-/// A trait for engines which perform inplace lwe addition.
-pub trait LweInplaceAdditionEngine<Ciphertext>: AbstractEngine
-where
-    Ciphertext: LweCiphertextEntity,
-{
-    fn inplace_add_lwe(
-        &mut self,
-        output: &mut Ciphertext,
-        input: &Ciphertext,
-    ) -> Result<(), LweInplaceAdditionError<Self::EngineError>>;
-
-    unsafe fn inplace_add_lwe_unchecked(&mut self, output: &mut Ciphertext, input: &Ciphertext);
-}
-
-engine_error! {
-    "The error used in the `LweNegationEngine` trait.",
-    LweNegationError @
-    LweDimensionMismatch => "Input and output ciphertexts have incompatible lwe dimension."
-}
-
-/// A trait for engines which perform out-of-place lwe negation.
-pub trait LweNegationEngine<Input, Output, Representation, Flavor>: AbstractEngine
-where
-    Input: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
-    Output: LweCiphertextEntity<Representation = Representation, KeyFlavor = Flavor>,
-{
-    fn negate_lwe(
-        &mut self,
-        output: &mut Output,
-        input: &Input,
-    ) -> Result<(), LweNegationError<Self::EngineError>>;
-
-    unsafe fn add_lwe_unchecked(&mut self, output: &mut Output, input: &Input);
-}
-
-engine_error! {
-    "The error used in the `LweInplaceNegationEngine` trait.",
-    LweInplaceNegationError @
-    LweDimensionMismatch => "Input and output ciphertexts have incompatible lwe dimension."
-}
-
-/// A trait for engines which perform inplace lwe negation.
-pub trait LweInplaceNegationEngine<Input>: AbstractEngine
-where
-    Input: LweCiphertextEntity,
-{
-    fn inplace_neg_lwe(
-        &mut self,
-        input: &mut Input,
-    ) -> Result<(), LweInplaceNegationError<Self::EngineError>>;
-
-    unsafe fn inplace_neg_lwe_unchecked(&mut self, input: &mut Input);
-}
-
-engine_error! {
-    "The error used in the `LweScalarAdditionEngine` trait.",
-    LweScalarAdditionError @
-}
-
-/// A trait for engines which perform out-of-place lwe addition.
-pub trait LweScalarAdditionEngine<Input1, Input2, Output, Representation>: AbstractEngine
-where
-    Input1: LweCiphertextEntity<Representation = Representation>,
-    Input2: PlaintextEntity<Representation = Representation>,
-    Output: LweCiphertextEntity<Representation = Representation>,
-{
-    fn scalar_add_lwe(
-        &mut self,
-        output: &mut Output,
-        input_1: &Input1,
-        input_2: &Input2,
-    ) -> Result<(), LweScalarAdditionError<Self::EngineError>>;
-
-    unsafe fn scalar_add_lwe_unchecked(
-        &mut self,
-        output: &mut Output,
-        input_1: &Input1,
-        input_2: &Input2,
-    );
-}
-
-engine_error! {
-    "The error used in the `LweInplaceScalarAdditionEngine` trait.",
-    LweInplaceScalarAdditionError @
-}
-
-/// A trait for engines which perform inplace lwe addition.
-pub trait LweInplaceScalarAdditionEngine<Input, Output, Representation>: AbstractEngine
-where
-    Input: PlaintextEntity<Representation = Representation>,
-    Output: LweCiphertextEntity<Representation = Representation>,
-{
-    fn inplace_scalar_add_lwe(
-        &mut self,
-        output: &mut Output,
-        input: &Input,
-    ) -> Result<(), LweInplaceAdditionError<Self::EngineError>>;
-
-    unsafe fn inplace_scalar_add_lwe_unchecked(&mut self, output: &mut Output, input: &Input);
-}
-
-// This makes it impossible for types outside concrete to implement operations.
-pub(crate) mod sealed {
-    pub trait AbstractEngineSeal {}
-}
+mod lwe_keyswitch_key_generation;
+pub use lwe_keyswitch_key_generation::*;

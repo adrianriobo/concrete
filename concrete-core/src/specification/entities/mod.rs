@@ -204,6 +204,7 @@ pub trait GlweSecretKeyEntity: AbstractEntity<Kind = GlweSecretKeyKind> {
 }
 
 /// This trait must be implemented by types embodying an lwe keyswitch key.
+/// d
 pub trait LweKeyswitchKeyEntity: AbstractEntity<Kind = LweKeyswitchKeyKind> {
     /// The flavor of key the ciphertext was encrypted with.
     type KeyFlavor: KeyFlavorMarker;

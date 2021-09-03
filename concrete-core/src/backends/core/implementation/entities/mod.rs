@@ -26,3 +26,6 @@ pub use lwe_bootstrap_keys::*;
 
 mod plaintexts;
 pub use plaintexts::*;
+
+mod cleartexts;
+pub use cleartexts::*;
