@@ -14,7 +14,7 @@ use crate::backends::core::private::crypto::lwe::LweCiphertext;
 use crate::backends::core::private::math::decomposition::SignedDecomposer;
 use crate::backends::core::private::math::fft::{Complex64, Fft, FourierPolynomial};
 use crate::backends::core::private::math::polynomial::{
-    MonomialDegree, Polynomial, PolynomialList,
+    Polynomial, PolynomialList,
 };
 use crate::backends::core::private::math::tensor::{
     ck_dim_div, ck_dim_eq, AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, IntoTensor, Tensor,
@@ -22,9 +22,7 @@ use crate::backends::core::private::math::tensor::{
 use crate::backends::core::private::math::torus::UnsignedTorus;
 use crate::backends::core::private::utils::{zip, zip_args};
 use concrete_commons::numeric::{CastInto, Numeric};
-use concrete_commons::parameters::{
-    DecompositionBaseLog, DecompositionLevelCount, GlweSize, LweDimension, PolynomialSize,
-};
+use concrete_commons::parameters::{DecompositionBaseLog, DecompositionLevelCount, GlweSize, LweDimension, PolynomialSize, MonomialDegree};
 use std::marker::PhantomData;
 
 #[cfg(test)]

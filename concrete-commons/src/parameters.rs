@@ -83,6 +83,12 @@ pub struct PolynomialSize(pub usize);
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct PolynomialCount(pub usize);
 
+/// The degree of a monomial.
+///
+/// Assuming a monomial $aX^N$, this returns the $N$ value.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub struct MonomialDegree(pub usize);
+
 /// The logarithm of the base used in a decomposition.
 ///
 /// When decomposing an integer over powers of the $2^B$ basis, this type represents the $B$ value.

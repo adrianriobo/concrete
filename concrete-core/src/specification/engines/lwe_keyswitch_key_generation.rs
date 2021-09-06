@@ -2,7 +2,7 @@ use super::engine_error;
 use crate::specification::engines::AbstractEngine;
 use crate::specification::entities::markers::BinaryKeyFlavor;
 use crate::specification::entities::{
-    GlweSecretKeyEntity, LweKeyswitchKeyEntity, LweSecretKeyEntity,
+    LweKeyswitchKeyEntity, LweSecretKeyEntity,
 };
 use concrete_commons::dispersion::Variance;
 use concrete_commons::parameters::{
@@ -12,7 +12,10 @@ use concrete_commons::parameters::{
 engine_error! {
     "The error used in the [`LweKeyswitchKeyGenerationEngine`] trait.",
     LweKeyswitchKeyGenerationError @
-    MemoryExhausted => "Not enough memory left to allocate the entity."
+    MemoryExhausted => "Not enough memory left to allocate the entity.",
+    NoiseTooSmall => "The variance parameter provided is too small.",
+    DecompositionTooSmall => "The number of levels in the decomposition must be greater than one.",
+    ZeroDecompositionBase => "The decomposition base log must be greater than zero."
 }
 
 pub trait LweKeyswitchKeyGenerationEngine<KeyswitchKey, SecretKey>: AbstractEngine

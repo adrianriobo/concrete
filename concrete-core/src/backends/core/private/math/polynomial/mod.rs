@@ -20,8 +20,3 @@ mod monomial;
 #[allow(clippy::module_inception)]
 mod polynomial;
 
-/// The degree of a monomial.
-///
-/// Assuming a monomial $aX^N$, this returns the $N$ value.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct MonomialDegree(pub usize);

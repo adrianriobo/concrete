@@ -1,11 +1,11 @@
 use super::{GlweBody, GlweMask};
 use crate::backends::core::private::crypto::lwe::LweCiphertext;
-use crate::backends::core::private::math::polynomial::{MonomialDegree, PolynomialList};
+use crate::backends::core::private::math::polynomial::{PolynomialList};
 use crate::backends::core::private::math::tensor::{
     tensor_traits, AsMutSlice, AsMutTensor, AsRefSlice, AsRefTensor, Tensor,
 };
 use crate::backends::core::private::math::torus::UnsignedTorus;
-use concrete_commons::parameters::{GlweDimension, GlweSize, PolynomialSize};
+use concrete_commons::parameters::{GlweDimension, GlweSize, PolynomialSize, MonomialDegree};
 use serde::{Deserialize, Serialize};
 
 /// An GLWE ciphertext.

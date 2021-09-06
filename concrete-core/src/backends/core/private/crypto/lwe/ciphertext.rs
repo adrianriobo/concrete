@@ -8,11 +8,10 @@ use crate::backends::core::private::math::tensor::{
 
 use super::LweList;
 use crate::backends::core::private::crypto::glwe::GlweCiphertext;
-use crate::backends::core::private::math::polynomial::MonomialDegree;
 use crate::backends::core::private::math::torus::UnsignedTorus;
 use concrete_commons::key_kinds::KeyKind;
 use concrete_commons::numeric::{Numeric, UnsignedInteger};
-use concrete_commons::parameters::{LweDimension, LweSize};
+use concrete_commons::parameters::{LweDimension, LweSize, MonomialDegree};
 
 /// A ciphertext encrypted using the LWE scheme.
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]

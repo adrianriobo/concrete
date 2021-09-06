@@ -4,7 +4,7 @@ use crate::specification::entities::markers::{BinaryKeyFlavor, LweKeyswitchKeyKi
 use crate::specification::entities::{AbstractEntity, LweKeyswitchKeyEntity};
 use concrete_commons::parameters::{DecompositionBaseLog, DecompositionLevelCount, LweDimension};
 
-pub struct LweKeyswitchKey32(ImplLweKeyswitchKey<Vec<u32>>);
+pub struct LweKeyswitchKey32(pub(crate) ImplLweKeyswitchKey<Vec<u32>>);
 impl AbstractEntity for LweKeyswitchKey32 {
     type Kind = LweKeyswitchKeyKind;
     type Representation = CpuStandard32;
@@ -29,7 +29,7 @@ impl LweKeyswitchKeyEntity for LweKeyswitchKey32 {
     }
 }
 
-pub struct LweKeyswitchKey64(ImplLweKeyswitchKey<Vec<u64>>);
+pub struct LweKeyswitchKey64(pub(crate) ImplLweKeyswitchKey<Vec<u64>>);
 impl AbstractEntity for LweKeyswitchKey64 {
     type Kind = LweKeyswitchKeyKind;
     type Representation = CpuStandard64;

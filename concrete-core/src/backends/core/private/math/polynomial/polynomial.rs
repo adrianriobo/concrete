@@ -7,7 +7,7 @@ use crate::backends::core::private::math::tensor::{
 
 use super::*;
 use concrete_commons::numeric::UnsignedInteger;
-use concrete_commons::parameters::PolynomialSize;
+use concrete_commons::parameters::{PolynomialSize, MonomialDegree};
 
 // stop the induction when polynomials have KARATUSBA_STOP elements
 const KARATUSBA_STOP: usize = 32;

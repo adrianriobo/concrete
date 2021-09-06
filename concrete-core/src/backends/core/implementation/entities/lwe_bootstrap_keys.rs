@@ -13,7 +13,7 @@ use concrete_commons::parameters::{
 };
 use concrete_fftw::array::AlignedVec;
 
-struct LweBootstrapKey32(ImplStandardBootstrapKey<Vec<u32>>);
+pub struct LweBootstrapKey32(pub(crate) ImplStandardBootstrapKey<Vec<u32>>);
 impl AbstractEntity for LweBootstrapKey32 {
     type Kind = LweBootstrapKeyKind;
     type Representation = CpuStandard32;
@@ -43,7 +43,7 @@ impl LweBootstrapKeyEntity for LweBootstrapKey32 {
     }
 }
 
-struct LweBootstrapKey64(ImplStandardBootstrapKey<Vec<u64>>);
+pub struct LweBootstrapKey64(pub(crate) ImplStandardBootstrapKey<Vec<u64>>);
 impl AbstractEntity for LweBootstrapKey64 {
     type Kind = LweBootstrapKeyKind;
     type Representation = CpuStandard64;
@@ -73,7 +73,7 @@ impl LweBootstrapKeyEntity for LweBootstrapKey64 {
     }
 }
 
-struct FourierLweBootstrapKey32(ImplFourierBootstrapKey<AlignedVec<Complex64>, u32>);
+pub struct FourierLweBootstrapKey32(pub(crate) ImplFourierBootstrapKey<AlignedVec<Complex64>, u32>);
 impl AbstractEntity for FourierLweBootstrapKey32 {
     type Kind = LweBootstrapKeyKind;
     type Representation = CpuFourier32;
@@ -103,7 +103,7 @@ impl LweBootstrapKeyEntity for FourierLweBootstrapKey32 {
     }
 }
 
-struct FourierLweBootstrapKey64(ImplFourierBootstrapKey<AlignedVec<Complex64>, u64>);
+pub struct FourierLweBootstrapKey64(pub(crate) ImplFourierBootstrapKey<AlignedVec<Complex64>, u64>);
 impl AbstractEntity for FourierLweBootstrapKey64 {
     type Kind = LweBootstrapKeyKind;
     type Representation = CpuFourier64;

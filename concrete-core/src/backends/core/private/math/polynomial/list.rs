@@ -6,7 +6,7 @@ use crate::backends::core::private::math::tensor::{
 
 use super::*;
 use concrete_commons::numeric::UnsignedInteger;
-use concrete_commons::parameters::{PolynomialCount, PolynomialSize};
+use concrete_commons::parameters::{PolynomialCount, PolynomialSize, MonomialDegree};
 
 /// A generic polynomial list type.
 ///
@@ -232,7 +232,7 @@ impl<Cont> PolynomialList<Cont> {
     /// # Examples
     ///
     /// ```
-    /// use concrete_commons::parameters::PolynomialSize;
+    /// use concrete_commons::parameters::{PolynomialSize, MonomialDegree};
     /// use concrete_core::math::polynomial::{MonomialDegree, PolynomialList};
     /// let mut list = PolynomialList::from_container(vec![1u8, 2, 3, 4, 5, 6], PolynomialSize(3));
     /// list.update_with_wrapping_monic_monomial_mul(MonomialDegree(2));

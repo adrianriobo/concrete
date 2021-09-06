@@ -89,6 +89,9 @@ pub use glwe_encryption::*;
 mod glwe_vector_encryption;
 pub use glwe_vector_encryption::*;
 
+mod glwe_sample_extraction;
+pub use glwe_sample_extraction::*;
+
 mod lwe_encryption;
 pub use lwe_encryption::*;
 
@@ -124,3 +127,9 @@ pub use lwe_multisum::*;
 
 mod lwe_keyswitch_key_generation;
 pub use lwe_keyswitch_key_generation::*;
+
+mod lwe_bootstrap;
+pub use lwe_bootstrap::*;
+
+mod lwe_bootstrap_key_generation;
+pub use lwe_bootstrap_key_generation::*;
