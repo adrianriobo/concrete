@@ -19,4 +19,3 @@ mod list;
 mod monomial;
 #[allow(clippy::module_inception)]
 mod polynomial;
-

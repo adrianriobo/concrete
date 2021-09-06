@@ -4,46 +4,33 @@ use crate::backends::core::private::crypto::secret::GlweSecretKey as ImplGlweSec
 use crate::specification::engines::{GlweSecretKeyGenerationEngine, GlweSecretKeyGenerationError};
 use concrete_commons::parameters::{GlweDimension, PolynomialSize};
 
-impl GlweSecretKeyGenerationEngine<GlweSecretKey32> for CoreEngine {
-    fn generate_glwe_secret_key(
-        &mut self,
-        glwe_dimension: GlweDimension,
-        polynomial_size: PolynomialSize,
-    ) -> Result<GlweSecretKey32, GlweSecretKeyGenerationError<Self::EngineError>> {
-        Ok(unsafe { self.generate_glwe_secret_key_unchecked(glwe_dimension, polynomial_size) })
-    }
+macro_rules! implem {
+    ($SecretKey: ident) => {
+        impl GlweSecretKeyGenerationEngine<$SecretKey> for CoreEngine {
+            fn generate_glwe_secret_key(
+                &mut self,
+                glwe_dimension: GlweDimension,
+                polynomial_size: PolynomialSize,
+            ) -> Result<$SecretKey, GlweSecretKeyGenerationError<Self::EngineError>> {
+                Ok(unsafe {
+                    self.generate_glwe_secret_key_unchecked(glwe_dimension, polynomial_size)
+                })
+            }
 
-    unsafe fn generate_glwe_secret_key_unchecked(
-        &mut self,
-        glwe_dimension: GlweDimension,
-        polynomial_size: PolynomialSize,
-    ) -> GlweSecretKey32 {
-        GlweSecretKey32(ImplGlweSecretKey::generate_binary(
-            glwe_dimension,
-            polynomial_size,
-            &mut self.secret_generator,
-        ))
-    }
+            unsafe fn generate_glwe_secret_key_unchecked(
+                &mut self,
+                glwe_dimension: GlweDimension,
+                polynomial_size: PolynomialSize,
+            ) -> $SecretKey {
+                $SecretKey(ImplGlweSecretKey::generate_binary(
+                    glwe_dimension,
+                    polynomial_size,
+                    &mut self.secret_generator,
+                ))
+            }
+        }
+    };
 }
 
-impl GlweSecretKeyGenerationEngine<GlweSecretKey64> for CoreEngine {
-    fn generate_glwe_secret_key(
-        &mut self,
-        glwe_dimension: GlweDimension,
-        polynomial_size: PolynomialSize,
-    ) -> Result<GlweSecretKey64, GlweSecretKeyGenerationError<Self::EngineError>> {
-        Ok(unsafe { self.generate_glwe_secret_key_unchecked(glwe_dimension, polynomial_size) })
-    }
-
-    unsafe fn generate_glwe_secret_key_unchecked(
-        &mut self,
-        glwe_dimension: GlweDimension,
-        polynomial_size: PolynomialSize,
-    ) -> GlweSecretKey64 {
-        GlweSecretKey64(ImplGlweSecretKey::generate_binary(
-            glwe_dimension,
-            polynomial_size,
-            &mut self.secret_generator,
-        ))
-    }
-}
+implem!(GlweSecretKey32);
+implem!(GlweSecretKey64);

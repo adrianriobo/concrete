@@ -5,40 +5,27 @@ use crate::backends::core::implementation::entities::{LweSecretKey32, LweSecretK
 use crate::backends::core::private::crypto::secret::LweSecretKey as ImplLweSecretKey;
 use crate::specification::engines::{LweSecretKeyGenerationEngine, LweSecretKeyGenerationError};
 
-impl LweSecretKeyGenerationEngine<LweSecretKey32> for CoreEngine {
-    fn generate_lwe_secret_key(
-        &mut self,
-        lwe_dimension: LweDimension,
-    ) -> Result<LweSecretKey32, LweSecretKeyGenerationError<Self::EngineError>> {
-        Ok(unsafe { self.generate_lwe_secret_key_unchecked(lwe_dimension) })
-    }
+macro_rules! implem {
+    ($SecretKey:ident) => {
+        impl LweSecretKeyGenerationEngine<$SecretKey> for CoreEngine {
+            fn generate_lwe_secret_key(
+                &mut self,
+                lwe_dimension: LweDimension,
+            ) -> Result<$SecretKey, LweSecretKeyGenerationError<Self::EngineError>> {
+                Ok(unsafe { self.generate_lwe_secret_key_unchecked(lwe_dimension) })
+            }
 
-    unsafe fn generate_lwe_secret_key_unchecked(
-        &mut self,
-        lwe_dimension: LweDimension,
-    ) -> LweSecretKey32 {
-        LweSecretKey32(ImplLweSecretKey::generate_binary(
-            lwe_dimension,
-            &mut self.secret_generator,
-        ))
-    }
+            unsafe fn generate_lwe_secret_key_unchecked(
+                &mut self,
+                lwe_dimension: LweDimension,
+            ) -> $SecretKey {
+                $SecretKey(ImplLweSecretKey::generate_binary(
+                    lwe_dimension,
+                    &mut self.secret_generator,
+                ))
+            }
+        }
+    };
 }
-
-impl LweSecretKeyGenerationEngine<LweSecretKey64> for CoreEngine {
-    fn generate_lwe_secret_key(
-        &mut self,
-        lwe_dimension: LweDimension,
-    ) -> Result<LweSecretKey64, LweSecretKeyGenerationError<Self::EngineError>> {
-        Ok(unsafe { self.generate_lwe_secret_key_unchecked(lwe_dimension) })
-    }
-
-    unsafe fn generate_lwe_secret_key_unchecked(
-        &mut self,
-        lwe_dimension: LweDimension,
-    ) -> LweSecretKey64 {
-        LweSecretKey64(ImplLweSecretKey::generate_binary(
-            lwe_dimension,
-            &mut self.secret_generator,
-        ))
-    }
-}
+implem!(LweSecretKey32);
+implem!(LweSecretKey64);

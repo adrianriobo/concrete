@@ -1,9 +1,7 @@
 use super::engine_error;
 use crate::specification::engines::AbstractEngine;
 use crate::specification::entities::markers::BinaryKeyFlavor;
-use crate::specification::entities::{
-    LweKeyswitchKeyEntity, LweSecretKeyEntity,
-};
+use crate::specification::entities::{LweKeyswitchKeyEntity, LweSecretKeyEntity};
 use concrete_commons::dispersion::Variance;
 use concrete_commons::parameters::{
     DecompositionBaseLog, DecompositionLevelCount, GlweDimension, PolynomialSize,

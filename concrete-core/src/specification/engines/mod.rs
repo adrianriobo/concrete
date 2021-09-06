@@ -68,9 +68,6 @@ macro_rules! engine_error{
 }
 pub(crate) use engine_error;
 
-mod conversion;
-pub use conversion::*;
-
 mod lwe_allocation;
 pub use lwe_allocation::*;
 
@@ -133,3 +130,6 @@ pub use lwe_bootstrap::*;
 
 mod lwe_bootstrap_key_generation;
 pub use lwe_bootstrap_key_generation::*;
+
+mod lwe_bootstrap_key_conversion;
+pub use lwe_bootstrap_key_conversion::*;

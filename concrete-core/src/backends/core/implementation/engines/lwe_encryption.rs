@@ -11,136 +11,79 @@ use crate::specification::entities::{
 };
 use concrete_commons::dispersion::Variance;
 
-impl LweEncryptionEngine<LweSecretKey32, Plaintext32, LweCiphertext32> for CoreEngine {
-    fn encrypt_lwe(
-        &mut self,
-        key: &LweSecretKey32,
-        output: &mut LweCiphertext32,
-        input: &Plaintext32,
-        noise: Variance,
-    ) -> Result<(), LweEncryptionError<Self::EngineError>> {
-        if key.lwe_dimension() != output.lwe_dimension() {
-            return Err(LweEncryptionError::LweDimensionMismatch);
-        }
-        unsafe { self.encrypt_lwe_unchecked(key, output, input, noise) };
-        Ok(())
-    }
+macro_rules! implem {
+    ($SecretKey:ident, $Plaintext:ident, $Ciphertext:ident) => {
+        impl LweEncryptionEngine<$SecretKey, $Plaintext, $Ciphertext> for CoreEngine {
+            fn encrypt_lwe(
+                &mut self,
+                key: &$SecretKey,
+                output: &mut $Ciphertext,
+                input: &$Plaintext,
+                noise: Variance,
+            ) -> Result<(), LweEncryptionError<Self::EngineError>> {
+                if key.lwe_dimension() != output.lwe_dimension() {
+                    return Err(LweEncryptionError::LweDimensionMismatch);
+                }
+                unsafe { self.encrypt_lwe_unchecked(key, output, input, noise) };
+                Ok(())
+            }
 
-    unsafe fn encrypt_lwe_unchecked(
-        &mut self,
-        key: &LweSecretKey32,
-        output: &mut LweCiphertext32,
-        input: &Plaintext32,
-        noise: Variance,
-    ) {
-        key.0.encrypt_lwe(
-            &mut output.0,
-            &input.0,
-            noise,
-            &mut self.encryption_generator,
-        );
-    }
+            unsafe fn encrypt_lwe_unchecked(
+                &mut self,
+                key: &$SecretKey,
+                output: &mut $Ciphertext,
+                input: &$Plaintext,
+                noise: Variance,
+            ) {
+                key.0.encrypt_lwe(
+                    &mut output.0,
+                    &input.0,
+                    noise,
+                    &mut self.encryption_generator,
+                );
+            }
+        }
+    };
 }
+implem!(LweSecretKey32, Plaintext32, LweCiphertext32);
+implem!(LweSecretKey64, Plaintext64, LweCiphertext64);
 
-impl LweEncryptionEngine<LweSecretKey64, Plaintext64, LweCiphertext64> for CoreEngine {
-    fn encrypt_lwe(
-        &mut self,
-        key: &LweSecretKey64,
-        output: &mut LweCiphertext64,
-        input: &Plaintext64,
-        noise: Variance,
-    ) -> Result<(), LweEncryptionError<Self::EngineError>> {
-        if key.lwe_dimension() != output.lwe_dimension() {
-            return Err(LweEncryptionError::LweDimensionMismatch);
+macro_rules! implem_vector {
+    ($SecretKey:ident, $Plaintext:ident, $Ciphertext:ident) => {
+        impl LweVectorEncryptionEngine<$SecretKey, $Plaintext, $Ciphertext> for CoreEngine {
+            fn encrypt_lwe_vector(
+                &mut self,
+                key: &$SecretKey,
+                output: &mut $Ciphertext,
+                input: &$Plaintext,
+                noise: Variance,
+            ) -> Result<(), LweVectorEncryptionError<Self::EngineError>> {
+                if key.lwe_dimension() != output.lwe_dimension() {
+                    return Err(LweVectorEncryptionError::LweDimensionMismatch);
+                }
+                if input.plaintext_count().0 != output.lwe_ciphertext_count().0 {
+                    return Err(LweVectorEncryptionError::CountMismatch);
+                }
+                unsafe { self.encrypt_lwe_vector_unchecked(key, output, input, noise) };
+                Ok(())
+            }
+
+            unsafe fn encrypt_lwe_vector_unchecked(
+                &mut self,
+                key: &$SecretKey,
+                output: &mut $Ciphertext,
+                input: &$Plaintext,
+                noise: Variance,
+            ) {
+                key.0.encrypt_lwe_list(
+                    &mut output.0,
+                    &input.0,
+                    noise,
+                    &mut self.encryption_generator,
+                );
+            }
         }
-        unsafe { self.encrypt_lwe_unchecked(key, output, input, noise) };
-        Ok(())
-    }
-
-    unsafe fn encrypt_lwe_unchecked(
-        &mut self,
-        key: &LweSecretKey64,
-        output: &mut LweCiphertext64,
-        input: &Plaintext64,
-        noise: Variance,
-    ) {
-        key.0.encrypt_lwe(
-            &mut output.0,
-            &input.0,
-            noise,
-            &mut self.encryption_generator,
-        );
-    }
+    };
 }
-
-impl LweVectorEncryptionEngine<LweSecretKey32, PlaintextVector32, LweCiphertextVector32>
-    for CoreEngine
-{
-    fn encrypt_lwe_vector(
-        &mut self,
-        key: &LweSecretKey32,
-        output: &mut LweCiphertextVector32,
-        input: &PlaintextVector32,
-        noise: Variance,
-    ) -> Result<(), LweVectorEncryptionError<Self::EngineError>> {
-        if key.lwe_dimension() != output.lwe_dimension() {
-            return Err(LweVectorEncryptionError::LweDimensionMismatch);
-        }
-        if input.plaintext_count().0 != output.lwe_ciphertext_count().0 {
-            return Err(LweVectorEncryptionError::CountMismatch);
-        }
-        unsafe { self.encrypt_lwe_vector_unchecked(key, output, input, noise) };
-        Ok(())
-    }
-
-    unsafe fn encrypt_lwe_vector_unchecked(
-        &mut self,
-        key: &LweSecretKey32,
-        output: &mut LweCiphertextVector32,
-        input: &PlaintextVector32,
-        noise: Variance,
-    ) {
-        key.0.encrypt_lwe_list(
-            &mut output.0,
-            &input.0,
-            noise,
-            &mut self.encryption_generator,
-        );
-    }
-}
-
-impl LweVectorEncryptionEngine<LweSecretKey64, PlaintextVector64, LweCiphertextVector64>
-    for CoreEngine
-{
-    fn encrypt_lwe_vector(
-        &mut self,
-        key: &LweSecretKey64,
-        output: &mut LweCiphertextVector64,
-        input: &PlaintextVector64,
-        noise: Variance,
-    ) -> Result<(), LweVectorEncryptionError<Self::EngineError>> {
-        if key.lwe_dimension() != output.lwe_dimension() {
-            return Err(LweVectorEncryptionError::LweDimensionMismatch);
-        }
-        if input.plaintext_count().0 != output.lwe_ciphertext_count().0 {
-            return Err(LweVectorEncryptionError::CountMismatch);
-        }
-        unsafe { self.encrypt_lwe_vector_unchecked(key, output, input, noise) };
-        Ok(())
-    }
-
-    unsafe fn encrypt_lwe_vector_unchecked(
-        &mut self,
-        key: &LweSecretKey64,
-        output: &mut LweCiphertextVector64,
-        input: &PlaintextVector64,
-        noise: Variance,
-    ) {
-        key.0.encrypt_lwe_list(
-            &mut output.0,
-            &input.0,
-            noise,
-            &mut self.encryption_generator,
-        );
-    }
-}
+implem_vector!(LweSecretKey32, PlaintextVector32, LweCiphertextVector32);
+implem_vector!(LweSecretKey64, PlaintextVector64, LweCiphertextVecto64);

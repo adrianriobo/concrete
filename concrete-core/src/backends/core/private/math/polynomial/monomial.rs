@@ -3,7 +3,6 @@ use crate::backends::core::private::math::tensor::{
 };
 use concrete_commons::parameters::MonomialDegree;
 
-
 /// A monomial term.
 ///
 /// This type represents a free monomial term of a given degree.
@@ -11,8 +10,8 @@ use concrete_commons::parameters::MonomialDegree;
 /// # Example
 ///
 /// ```
-/// use concrete_core::math::polynomial::{Monomial};
 /// use concrete_commons::parameters::MonomialDegree;
+/// use concrete_core::math::polynomial::Monomial;
 /// let mono = Monomial::allocate(1u8, MonomialDegree(5));
 /// assert_eq!(*mono.get_coefficient(), 1u8);
 /// assert_eq!(mono.degree(), MonomialDegree(5));

@@ -1,15 +1,15 @@
 use crate::backends::core::implementation::engines::CoreEngine;
 use crate::backends::core::implementation::entities::{
-    GlweCiphextext32, GlweCiphextext64, LweCiphertext32, LweCiphertext64,
+    GlweCiphertext32, GlweCiphertext64, LweCiphertext32, LweCiphertext64,
 };
 use crate::specification::engines::{GlweSampleExtractionEngine, GlweSampleExtractionError};
 use concrete_commons::parameters::MonomialDegree;
 
-impl GlweSampleExtractionEngine<GlweCiphextext32, LweCiphertext32> for CoreEngine {
+impl GlweSampleExtractionEngine<GlweCiphertext32, LweCiphertext32> for CoreEngine {
     fn glwe_sample_extract(
         &mut self,
         output: &mut LweCiphertext32,
-        input: &GlweCiphextext32,
+        input: &GlweCiphertext32,
         nth: MonomialDegree,
     ) -> Result<(), GlweSampleExtractionError<Self::EngineError>> {
         if output.0.lwe_size().to_lwe_dimension().0
@@ -24,18 +24,18 @@ impl GlweSampleExtractionEngine<GlweCiphextext32, LweCiphertext32> for CoreEngin
     unsafe fn glwe_sample_extract_unchecked(
         &mut self,
         output: &mut LweCiphertext32,
-        input: &GlweCiphextext32,
+        input: &GlweCiphertext32,
         nth: MonomialDegree,
     ) {
         output.0.fill_with_glwe_sample_extraction(&input.0, nth);
     }
 }
 
-impl GlweSampleExtractionEngine<GlweCiphextext64, LweCiphertext64> for CoreEngine {
+impl GlweSampleExtractionEngine<GlweCiphertext64, LweCiphertext64> for CoreEngine {
     fn glwe_sample_extract(
         &mut self,
         output: &mut LweCiphertext64,
-        input: &GlweCiphextext64,
+        input: &GlweCiphertext64,
         nth: MonomialDegree,
     ) -> Result<(), GlweSampleExtractionError<Self::EngineError>> {
         if output.0.lwe_size().to_lwe_dimension().0
@@ -50,7 +50,7 @@ impl GlweSampleExtractionEngine<GlweCiphextext64, LweCiphertext64> for CoreEngin
     unsafe fn glwe_sample_extract_unchecked(
         &mut self,
         output: &mut LweCiphertext64,
-        input: &GlweCiphextext64,
+        input: &GlweCiphertext64,
         nth: MonomialDegree,
     ) {
         output.0.fill_with_glwe_sample_extraction(&input.0, nth);
