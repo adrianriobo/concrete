@@ -1,6 +1,6 @@
 use super::engine_error;
 use crate::specification::engines::AbstractEngine;
-use crate::specification::entities::{AbstractEntity, LweBootstrapKeyEntity};
+use crate::specification::entities::LweBootstrapKeyEntity;
 
 engine_error! {
     "The error used in the [`LweBootstrapKeyConversionEngine`] trait.",

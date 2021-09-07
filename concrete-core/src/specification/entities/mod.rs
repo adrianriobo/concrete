@@ -236,8 +236,13 @@ pub trait LweBootstrapKeyEntity: AbstractEntity<Kind = LweBootstrapKeyKind> {
     /// Returns the polynomial size of the key.
     fn polynomial_size(&self) -> PolynomialSize;
 
-    /// Returns the lwe dimension of the key.
-    fn lwe_dimension(&self) -> LweDimension;
+    /// Returns the input lwe dimension of the key.
+    fn input_lwe_dimension(&self) -> LweDimension;
+
+    /// Returns the output lwe dimension of the key.
+    fn output_lwe_dimension(&self) -> LweDimension {
+        LweDimension(self.glwe_dimension().0 * self.polynomial_size().0)
+    }
 
     /// Returns the number of decomposition levels of the key.
     fn decomposition_base_log(&self) -> DecompositionBaseLog;

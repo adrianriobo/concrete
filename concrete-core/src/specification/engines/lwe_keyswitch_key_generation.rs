@@ -3,9 +3,7 @@ use crate::specification::engines::AbstractEngine;
 use crate::specification::entities::markers::BinaryKeyFlavor;
 use crate::specification::entities::{LweKeyswitchKeyEntity, LweSecretKeyEntity};
 use concrete_commons::dispersion::Variance;
-use concrete_commons::parameters::{
-    DecompositionBaseLog, DecompositionLevelCount, GlweDimension, PolynomialSize,
-};
+use concrete_commons::parameters::{DecompositionBaseLog, DecompositionLevelCount};
 
 engine_error! {
     "The error used in the [`LweKeyswitchKeyGenerationEngine`] trait.",

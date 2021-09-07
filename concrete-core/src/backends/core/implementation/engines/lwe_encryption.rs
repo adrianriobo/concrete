@@ -86,4 +86,4 @@ macro_rules! implem_vector {
     };
 }
 implem_vector!(LweSecretKey32, PlaintextVector32, LweCiphertextVector32);
-implem_vector!(LweSecretKey64, PlaintextVector64, LweCiphertextVecto64);
+implem_vector!(LweSecretKey64, PlaintextVector64, LweCiphertextVector64);

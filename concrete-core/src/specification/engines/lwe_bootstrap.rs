@@ -1,13 +1,17 @@
 use super::engine_error;
 use crate::specification::engines::AbstractEngine;
-use crate::specification::entities::{GlweCiphertextEntity, LweCiphertextEntity, LweBootstrapKeyEntity};
 use crate::specification::entities::markers::BinaryKeyFlavor;
+use crate::specification::entities::{
+    GlweCiphertextEntity, LweBootstrapKeyEntity, LweCiphertextEntity,
+};
 
 engine_error! {
     "The error used in the [`LweBootstrapEngine`] trait.",
     LweBootstrapError @
     InputDimensionMismatch => "Input ciphertext and key lwe dimension are different",
-    SizeMismatch => "The sizes of the output lwe does not match the size of the input glwe."
+    PolynomialSizeMismatch => "Accumulator and key polynomial size are different",
+    AccumulatorDimensionMismatch => "Accumulator and key glwe dimension are different",
+    OutputDimensionMismatch => "Output and key  dimension are different"
 }
 
 /// A trait
@@ -19,7 +23,8 @@ where
         KeyFlavor = Ciphertext::KeyFlavor,
         Representation = Ciphertext::Representation,
     >,
-    BootstrapKey: LweBootstrapKeyEntity<InputKeyFlavor=BinaryKeyFlavor, OutputKeyFlavor=BinaryKeyFlavor>
+    BootstrapKey:
+        LweBootstrapKeyEntity<InputKeyFlavor = BinaryKeyFlavor, OutputKeyFlavor = BinaryKeyFlavor>,
 {
     fn lwe_bootstrap(
         &mut self,
@@ -36,6 +41,6 @@ where
         output: &mut Ciphertext,
         input: &Ciphertext,
         acc: &Accumulator,
-        bsk: &BootstrapKey
+        bsk: &BootstrapKey,
     );
 }

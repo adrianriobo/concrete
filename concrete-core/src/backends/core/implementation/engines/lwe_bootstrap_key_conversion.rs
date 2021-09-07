@@ -24,7 +24,7 @@ macro_rules! implem {
                 if output.polynomial_size() != input.polynomial_size() {
                     return Err(LweBootstrapKeyConversionError::DifferingPolynomialSize);
                 }
-                if output.lwe_dimension() != input.lwe_dimension() {
+                if output.input_lwe_dimension() != input.input_lwe_dimension() {
                     return Err(LweBootstrapKeyConversionError::DifferingLweDimension);
                 }
                 if output.glwe_dimension() != input.glwe_dimension() {

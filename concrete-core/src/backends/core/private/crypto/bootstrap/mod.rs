@@ -128,13 +128,13 @@ mod test {
 
     fn test_bsk_gen_equivalence<T: UnsignedTorus + Send + Sync>() {
         for _ in 0..10 {
-            let lwe_dim = LweDimension(crate::test_tools::random_usize_between(5..10));
-            let glwe_dim = GlweDimension(crate::test_tools::random_usize_between(5..10));
-            let poly_size = PolynomialSize(crate::test_tools::random_usize_between(5..10));
-            let level = DecompositionLevelCount(crate::test_tools::random_usize_between(2..5));
-            let base_log = DecompositionBaseLog(crate::test_tools::random_usize_between(2..5));
-            let mask_seed = crate::test_tools::any_usize() as u128;
-            let noise_seed = crate::test_tools::any_usize() as u128;
+            let lwe_dim = LweDimension(crate::backends::core::private::test_tools::random_usize_between(5..10));
+            let glwe_dim = GlweDimension(crate::backends::core::private::test_tools::random_usize_between(5..10));
+            let poly_size = PolynomialSize(crate::backends::core::private::test_tools::random_usize_between(5..10));
+            let level = DecompositionLevelCount(crate::backends::core::private::test_tools::random_usize_between(2..5));
+            let base_log = DecompositionBaseLog(crate::backends::core::private::test_tools::random_usize_between(2..5));
+            let mask_seed = crate::backends::core::private::test_tools::any_usize() as u128;
+            let noise_seed = crate::backends::core::private::test_tools::any_usize() as u128;
 
             let mut secret_generator = SecretRandomGenerator::new(None);
             let lwe_sk = LweSecretKey::generate_binary(lwe_dim, &mut secret_generator);

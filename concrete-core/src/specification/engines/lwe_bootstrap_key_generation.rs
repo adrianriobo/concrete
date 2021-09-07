@@ -1,8 +1,7 @@
 use super::engine_error;
 use crate::specification::engines::AbstractEngine;
 use crate::specification::entities::{
-    GlweCiphertextEntity, GlweSecretKeyEntity, LweBootstrapKeyEntity, LweCiphertextEntity,
-    LweSecretKeyEntity,
+    GlweSecretKeyEntity, LweBootstrapKeyEntity, LweSecretKeyEntity,
 };
 use concrete_commons::dispersion::Variance;
 use concrete_commons::parameters::{DecompositionBaseLog, DecompositionLevelCount};

@@ -1,8 +1,8 @@
 use rand::Rng;
 
-use concrete_commons::parameters::PolynomialSize;
+use concrete_commons::parameters::{PolynomialSize, MonomialDegree};
 
-use crate::backends::core::private::math::polynomial::{MonomialDegree, Polynomial};
+use crate::backends::core::private::math::polynomial::{Polynomial};
 use crate::backends::core::private::math::random::RandomGenerator;
 use crate::backends::core::private::math::torus::UnsignedTorus;
 

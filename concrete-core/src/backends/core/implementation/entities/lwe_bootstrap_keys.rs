@@ -30,7 +30,7 @@ impl LweBootstrapKeyEntity for LweBootstrapKey32 {
         self.0.polynomial_size()
     }
 
-    fn lwe_dimension(&self) -> LweDimension {
+    fn input_lwe_dimension(&self) -> LweDimension {
         self.0.key_size()
     }
 
@@ -60,7 +60,7 @@ impl LweBootstrapKeyEntity for LweBootstrapKey64 {
         self.0.polynomial_size()
     }
 
-    fn lwe_dimension(&self) -> LweDimension {
+    fn input_lwe_dimension(&self) -> LweDimension {
         self.0.key_size()
     }
 
@@ -90,7 +90,7 @@ impl LweBootstrapKeyEntity for FourierLweBootstrapKey32 {
         self.0.polynomial_size()
     }
 
-    fn lwe_dimension(&self) -> LweDimension {
+    fn input_lwe_dimension(&self) -> LweDimension {
         self.0.key_size()
     }
 
@@ -120,7 +120,7 @@ impl LweBootstrapKeyEntity for FourierLweBootstrapKey64 {
         self.0.polynomial_size()
     }
 
-    fn lwe_dimension(&self) -> LweDimension {
+    fn input_lwe_dimension(&self) -> LweDimension {
         self.0.key_size()
     }
 
